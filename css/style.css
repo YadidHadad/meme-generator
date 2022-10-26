@@ -26,7 +26,6 @@ nav {
 
 button {
     text-transform: capitalize;
-
 }
 
 input,
@@ -34,8 +33,6 @@ select {
     height: 3em;
     margin-inline: 1em;
 }
-
-
 
 section {
     height: 100vh;
@@ -86,6 +83,10 @@ button {
     align-items: center;
 }
 
+.hidden {
+    display: none;
+}
+
 /* LOGO */
 
 .logo {
@@ -104,10 +105,18 @@ button {
 /* MEME EDITOR */
 
 canvas {
-    background-color: brown;
-    margin: 10px;
+    /* background-color: brown; */
+    /* margin: 10px; */
+
 }
 
+.canvas-container {
+    max-height: 400px;
+    margin: 0;
+    padding: 0;
+    aspect-ratio: 1/1;
+    border: 1px solid red;
+}
 
 .control-box {
     background-color: aliceblue;
@@ -136,4 +145,23 @@ canvas {
 
 [name="modal-share"] {
     display: none;
+}
+
+/* GALLERY */
+
+
+.grid-container {
+    padding: 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 2px;
+}
+
+.grid-item {
+    width: 100%;
+    text-align: center;
+    background-color: blueviolet;
+    border: 1px black solid;
+    aspect-ratio: 1/1;
 }
