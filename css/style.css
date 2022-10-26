@@ -5,11 +5,6 @@
 
 /* FONTS */
 
-@font-face {
-    /* font-family: impact; */
-    /* src: url(../fonts/impact.ttf); */
-}
-
 /* BASICS */
 
 body {
@@ -44,6 +39,10 @@ section {
     margin: 0 auto;
 
     padding: 10px;
+    position: static;
+    left: 0;
+    transition-timing-function: ease-in-out;
+    transition: left 1s linear;
 }
 
 button {
@@ -88,9 +87,21 @@ button {
     align-items: center;
 }
 
-.hidden {
-    display: none;
+.show {
+    /* display: none; */
+    position: fixed;
+    left: 0;
+
 }
+
+.hide {
+    /* display: none; */
+    position: fixed;
+    left: -200%;
+
+
+}
+
 
 /* LOGO */
 
@@ -108,12 +119,6 @@ button {
 
 
 /* MEME EDITOR */
-
-canvas {
-    /* background-color: brown; */
-    /* margin: 10px; */
-
-}
 
 .canvas-container {
     max-height: 400px;
@@ -155,7 +160,7 @@ canvas {
 /* GALLERY */
 
 .common-search-values>div {
-    margin-inline: 1em;
+    margin-inline-start: 1rem;
 }
 
 
@@ -173,4 +178,6 @@ canvas {
     background-color: blueviolet;
     border: 1px black solid;
     aspect-ratio: 1/1;
+
+    /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
 }

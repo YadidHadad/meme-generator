@@ -1,12 +1,5 @@
 'use strict'
 
-
-let gTextStrokeColor = '#000000'
-let gTextFillColor = '#FFFFFF'
-let gTextSize = '2rem'
-let gTextFamily = 'Arial'
-let gTextAlign = 'center'
-
 let gElCanvas = {}
 let gCtx
 
@@ -19,64 +12,18 @@ function onInit() {
     renderGallery()
     renderKeywords()
     addListeners()
+
+
 }
-
-
-function renderMeme(elImg, id) {
-    // get meme data from service
-    const { selectedImgId, selectedLineIdx, lines } = getMeme()
-
-    console.log(elImg)
-
-    setMemeImg(id)
-
-    gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
-    drawText(lines[selectedLineIdx].txt, gElCanvas.width / 2, 10)
-}
-
-// RESIZE CANVAS
-function resizeCanvas() {
-    const elContainer = document.querySelector('.canvas-container')
-    // console.log(`elContainer:`, elContainer)
-    gElCanvas.width = elContainer.offsetWidth
-    gElCanvas.height = elContainer.offsetHeight
-}
-
-// CANVAS ACTIONS
-// IMG
-function drawImg(src) {
-    const elImg = document.querySelector('.current-meme-img')
-    elImg.src = src
-    // const img = document.querySelector('img')
-    // Naive approach:
-    // there is a risk that image is not loaded yet and nothing will be drawn on canvas
-    gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height) // Draws the specified image
-}
-
-// TEXT
-function drawText(text, x, y) {
-    console.log(text)
-    console.log(x, y)
-    gCtx.textBaseline = "top";
-    gCtx.lineWidth = 2
-    gCtx.strokeStyle = gTextStrokeColor
-    gCtx.fillStyle = gTextFillColor
-    gCtx.textAlign = 'center';
-    gCtx.font = `${gTextSize} ${gTextFamily}`
-    gCtx.fillText(text, x, y) // Draws (fills) a given text at the given (x, y) position.
-    gCtx.strokeText(text, x, y) // Draws (strokes) a given text at the given (x, y) position.
-}
-
 
 // EVENT LISTENERES
-
 function addListeners() {
     addMouseListeners()
     addTouchListeners()
     //Listen for resize ev 
     window.addEventListener('resize', () => {
         resizeCanvas()
-        renderCanvas()
+        clearCanvas()
     })
 }
 
@@ -92,7 +39,6 @@ function addTouchListeners() {
     gElCanvas.addEventListener('touchend', onUp)
 }
 
-// EVENTS
 function onDown(ev) {
     console.log('Im from onDown')
     //Get the ev pos from mouse or touch
@@ -117,7 +63,7 @@ function onMove(ev) {
     //Save the last pos , we remember where we`ve been and move accordingly
     gStartPos = pos
     //The canvas is render again after every move
-    renderCanvas()
+    clearCanvas()
 
 }
 
@@ -137,7 +83,7 @@ function renderGallery(searchFilter) {
 
     const strHTML = imgs.map((img) => {
         return `
-                <img id="${img.id}" class="grid-item" current-meme-img" src=${img.url} alt="" onClick="renderMeme(this, ${img.id})">`
+                <img id="${img.id}" class="grid-item" current-meme-img" src=${img.url} alt="" onClick="onSetMemeImg(idx = ${img.id});renderMeme(idx = ${img.id}, ev = event);">`
     })
 
     imgsGallery.innerHTML = strHTML.join('')
@@ -150,7 +96,7 @@ function renderKeywords() {
     const keywordsMap = getKeywords()
 
     const keywords = Object.keys(keywordsMap)
-
+    console.log(keywords)
     const strHTML = keywords.map((keyword) => {
         let fontSize
         if (keywordsMap[keyword] > 10) fontSize = '2'
@@ -163,3 +109,141 @@ function renderKeywords() {
     document.querySelector('.common-search-values').innerHTML = strHTML.join('')
 
 }
+
+// CANVAS
+function renderMeme(idx, text, ev) {
+    //GET DATA
+    const { lines, selectedLineIdx } = getMeme()
+
+    // UPDATE MODEL
+    if (idx) setMemeImg(idx)
+    if (text && lines.length > 0) setMemeText(selectedLineIdx, text)
+
+    //GET DATA
+    const { selectedImgId } = getMeme()
+
+    // clear Canvas
+    clearCanvas()
+
+    // render Image
+    const elImg = document.getElementById(selectedImgId);
+    console.log((elImg))
+    if (elImg) gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
+    else return
+
+    // render text lines
+    if (text) {
+
+        if (lines.length < 1) {
+            resetMemeTextInput()
+        } else {
+            lines.map(line => {
+
+                const x = line.pos.x
+                const y = line.pos.y
+                drawText(line.txt, line, x, y)
+            })
+        }
+    }
+}
+
+function onSetMemeImg(idx) {
+    setMemeImg(idx)
+    // SHOW HIDE SECTIONS
+
+    toggleHide('meme-editor')
+    toggleHide('image-gallery')
+
+
+}
+
+function resetMemeTextInput() {
+    const element = document.querySelector('.text-editor')
+    element.value = ''
+
+}
+
+function drawText(text, line, x, y) {
+    console.log(`line:`, line)
+
+    const textLength = gCtx.measureText(text).width
+    line.length = textLength
+
+    gCtx.textBaseline = 'middle'
+
+    // const text = line
+    gCtx.lineWidth = 2
+    gCtx.strokeStyle = 'black'
+    gCtx.fillStyle = line.color
+    gCtx.textAlign = line.align;
+    gCtx.font = `${line.size}px ${line.family}`
+    console.log(`${line.size}px ${line.family}`)
+    gCtx.fillText(text, x, y) // Draws (fills) a given text at the given (x, y) position.
+    gCtx.strokeText(text, x, y) // Draws (strokes) a given text at the given (x, y) position.
+    if (textLength > gElCanvas.width - 40) {
+        alert('Text too long!')
+        return
+    }
+}
+
+function drawRectangle() {
+    gCtx.beginPath();
+    gCtx.rect(20, 20, 150, 100);
+    gCtx.stroke();
+}
+
+function clearCanvas() {
+    //Set the backgournd color to grey 
+    // gCtx.fillStyle = "#ede5ff"
+    //Clear the canvas,  fill it with grey background
+    gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
+
+}
+
+function onMemeLine(text) {
+    const { selectedLineIdx, lines } = getMeme()
+    const line = lines[selectedLineIdx]
+    setMemeText(selectedLineIdx, text)
+    console.log(text)
+    const x = gElCanvas / 2
+    const y = 50
+    drawText(text, line, x, y)
+
+}
+
+function resizeCanvas() {
+    const elContainer = document.querySelector('.canvas-container')
+    // console.log(`elContainer:`, elContainer)
+    gElCanvas.width = elContainer.offsetWidth
+    gElCanvas.height = elContainer.offsetHeight
+}
+
+//MEME EDITOR
+
+function onAddLine() {
+    addLine(gElCanvas.width, gElCanvas.height)
+    resetMemeTextInput()
+}
+
+function onSetFont(font) {
+    setFont(font)
+
+    const { selectedImgId, selectedLineIdx, lines } = getMeme()
+    if (!lines[selectedLineIdx].txt) return
+    renderMeme(selectedImgId, lines[selectedLineIdx].txt)
+
+}
+
+// SHOW HIDE ELEMENTS
+
+function toggleHide(elementName) {
+    console.log('hide')
+    document.querySelector(`[name="${elementName}"]`).classList.toggle('hide')
+}
+// function hideElement(elementName) {
+//     document.querySelector(`[name="${elementName}"]`).classList.toggle('hide')
+// }
+
+// onShowGallery(){
+
+// }

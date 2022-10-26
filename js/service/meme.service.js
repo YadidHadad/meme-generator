@@ -26,16 +26,8 @@ var gImgs = [
 
 var gMeme = {
     selectedImgId: 5,
-    selectedLineIdx: 0,
-    lines: [
-        {
-            txt: '',
-            size: 20,
-            align: 'center',
-            color: 'white',
-            strokeColor: 'black',
-        }
-    ]
+    selectedLineIdx: -1,
+    lines: []
 }
 
 function getMeme() {
@@ -66,15 +58,16 @@ function getImages(searchFilter) {
     return imgs
 }
 
-function setMemeImg(id) {
-    gMeme.selectedImgId = id
+function setMemeImg(idx) {
+    gMeme.selectedImgId = idx
 
-    const img = getImg(id)
-    const keywords = img.keywords
+    const img = getImg(idx)
+    updateSearchCount(img.keywords)
 
-    updateSearchCount(keywords)
-    console.log(keywords)
+}
 
+function setMemeText(lineIdx, text) {
+    gMeme.lines[lineIdx].txt = text
 }
 
 function updateSearchCount(keywords) {
@@ -95,4 +88,49 @@ function updateSearchCount(keywords) {
 
 function getKeywords() {
     return gKeywordSearchCountMap
+}
+
+//MEME EDITOR
+
+function addLine(width, height) {
+
+
+    var x, y
+    const linesCount = gMeme.lines.length
+    if (linesCount === 0) {
+        x = width / 2
+        y = 50
+
+    } else if (linesCount === 1) {
+        x = width / 2
+        y = height - 50
+
+    } else {
+        x = width / 2
+        y = height / 2
+    }
+
+    createLine(x, y)
+}
+
+
+function createLine(x, y) {
+    const newLine = {
+        txt: '',
+        size: 50,
+        length: 0,
+        align: 'center',
+        color: 'white',
+        family: 'Impact',
+        pos: { x, y },
+    }
+    console.log(`newLine:`, newLine)
+    gMeme.lines.push(newLine)
+    gMeme.selectedLineIdx += 1
+
+
+}
+
+function setFont(font) {
+    gMeme.lines[gMeme.selectedLineIdx].family = font
 }

@@ -34,18 +34,14 @@
                 <div class="search-keyword">sarcastic</div>
                 <div class="search-keyword">sad</div>
             </div>
-
-
-
         </div>
         <div class="grid-container">
             <!-- MEMES GALLERY -->
         </div>
-
     </section>
 
     <!-- MEME-EDITOR -->
-    <section name="meme-editor" class="flex wrap justify-around">
+    <section name="meme-editor" class="flex wrap justify-around  hide">
         <!-- CANVAS -->
         <div class="canvas-container">
             <canvas id="canvas" width="400" height="400">
@@ -53,19 +49,25 @@
 
         <!-- CONTROL BOX -->
         <div class="control-box flex align-center justify-center column ">
-            <input type="text" />
+            <input type="text" class="text-editor" value="" placeholder="Add new line to type!"
+                oninput="renderMeme(null, this.value, event)" />
             <div class="line-controls">
                 <button class="line-add"><img src="./img/ICONS/add.png" alt="" class="icon"
-                        onclick="addText(ev)"></button>
+                        onclick="onAddLine()"></button>
                 <button class="line-delete"><img src="./img/ICONS/trash.png" alt="" class="icon"></button>
             </div>
             <div class="text-controls  flex align-center space-around">
-                <select id="font-family">
-                    <option value="impact">Impact</option>
-                    <option value="arial">Arial</option>
+                <select id="font-family" onchange="onSetFont(this.value)">
+                    <option value="Impact">Impact</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="serif">serif</option>
+                    <option value="sans-serif">sans-serif</option>
                 </select>
 
-                <input type="color" value="#ff0000" id="colorWell" oninput=" onChangeColor(this)" />
+                <input type="color" value="#FFFFFF" id="colorWell" oninput=" onChangeColor(this)" />
                 <button class="font-bigger"><img src="./img/ICONS/increase font - icon.png" alt=""
                         class="icon"></button>
                 <button class="font-smaller"><img src="./img/ICONS/decrease font - icon.png" alt=""
@@ -87,19 +89,19 @@
     </section>
 
     <!-- SAVED MEMES -->
-    <section name="meme-saved">
+    <section name="meme-saved " class=" hide">
         <div class="grid"></div>
 
 
     </section>
 
     <!-- MODAL -->
-    <section name="modal-share">
+    <section name="modal-share" class=" hide">
         <button class="download">download</button>
         <button class="share">share on facebook</button>
     </section>
 
-    <script src="./js/service/test.service.js"></script>
+    <!-- <script src="./js/service/test.service.js"></script> -->
     <script src="./js/service/storage.service.js"></script>
     <script src="./js/service/meme.service.js"></script>
     <script src="./js/memeController.js"></script>
