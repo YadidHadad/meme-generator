@@ -157,7 +157,7 @@ function renderKeywords() {
         else if (keywordsMap[keyword] > 5) fontSize = '1.5'
         else fontSize = '1'
 
-        return `<div class="search-keyword" style="font-size: ${fontSize}rem ;">${keyword}</div>`
+        return `<div class="search-keyword" value="${keyword}" style="font-size: ${fontSize}rem ;" onclick="renderGallery('${keyword}')">${keyword}</div>`
     })
 
     document.querySelector('.common-search-values').innerHTML = strHTML.join('')
