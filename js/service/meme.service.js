@@ -48,16 +48,51 @@ function getImg(id) {
 
 }
 
-function getImages() {
-    return gImgs
+function getImages(searchFilter) {
+    // if input is empty rreturn all gImages
+    if (!searchFilter) return gImgs
 
+    //if not turn the value to lower case and filter
+    var searchFilter = searchFilter.toLowerCase()
+    console.log(searchFilter)
+
+    var imgs = gImgs.filter(img => {
+        var bool = img.keywords.find(keyword => {
+            return keyword.startsWith(searchFilter)
+        })
+        return bool ? true : false
+    })
+
+    return imgs
 }
 
 function setMemeImg(id) {
     gMeme.selectedImgId = id
 
     const img = getImg(id)
+    const keywords = img.keywords
 
-    console.log(img)
+    updateSearchCount(keywords)
+    console.log(keywords)
 
+}
+
+function updateSearchCount(keywords) {
+    console.log(gKeywordSearchCountMap)
+
+    keywords.map((keyword) => {
+
+        if (gKeywordSearchCountMap.hasOwnProperty(keyword)) {
+            gKeywordSearchCountMap[keyword] += 1
+
+        } else {
+            gKeywordSearchCountMap[keyword] = 1
+        }
+
+    })
+    console.log(gKeywordSearchCountMap)
+}
+
+function getKeywords() {
+    return gKeywordSearchCountMap
 }

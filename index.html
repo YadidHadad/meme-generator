@@ -18,26 +18,28 @@
             <button class="gallery">gallery</button>
             <button class="memes">memes</button>
             <button class="about">about</button>
-
         </nav>
     </header>
     <!-- IMAGE-GALLERY -->
     <section name="image-gallery">
-        <input type="text" class="search">
-        <div class="common-search-values"></div>
+        <div class="gallery-inputs flex row justify-between">
+            <input type="text" class="search" placeholder="What's on your mind?" value=""
+                oninput="renderGallery(this.value)">
+            <div class="common-search-values flex wrap justify-between align-center">
+                <div class="search-keyword">funny</div>
+                <div class="search-keyword">cat</div>
+                <div class="search-keyword">baby</div>
+                <div class="search-keyword">happy</div>
+                <div class="search-keyword">crazy</div>
+                <div class="search-keyword">sarcastic</div>
+                <div class="search-keyword">sad</div>
+            </div>
+
+
+
+        </div>
         <div class="grid-container">
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
-            <div class="grid-item">CARD</div>
+            <!-- MEMES GALLERY -->
         </div>
 
     </section>
@@ -97,6 +99,7 @@
         <button class="share">share on facebook</button>
     </section>
 
+    <script src="./js/service/test.service.js"></script>
     <script src="./js/service/storage.service.js"></script>
     <script src="./js/service/meme.service.js"></script>
     <script src="./js/memeController.js"></script>

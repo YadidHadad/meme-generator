@@ -32,6 +32,7 @@ input,
 select {
     height: 3em;
     margin-inline: 1em;
+    text-align: center;
 }
 
 section {
@@ -77,6 +78,10 @@ button {
 
 .flex.justify-around {
     justify-content: space-around;
+}
+
+.flex.justify-between {
+    justify-content: space-between;
 }
 
 .flex.align-center {
@@ -148,6 +153,10 @@ canvas {
 }
 
 /* GALLERY */
+
+.common-search-values>div {
+    margin-inline: 1em;
+}
 
 
 .grid-container {

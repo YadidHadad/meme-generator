@@ -17,6 +17,7 @@ function onInit() {
     gCtx = gElCanvas.getContext('2d')
 
     renderGallery()
+    renderKeywords()
     addListeners()
 }
 
@@ -128,10 +129,11 @@ function onUp() {
 
 // RENDER GALLERY
 
-function renderGallery() {
+function renderGallery(searchFilter) {
+    console.log(searchFilter)
 
     const imgsGallery = document.querySelector('.grid-container')
-    const imgs = getImages()
+    const imgs = getImages(searchFilter)
 
     const strHTML = imgs.map((img) => {
         return `
@@ -139,6 +141,25 @@ function renderGallery() {
     })
 
     imgsGallery.innerHTML = strHTML.join('')
-    console.log(strHTML.join(''))
+    // console.log(strHTML.join(''))
+
+}
+
+function renderKeywords() {
+
+    const keywordsMap = getKeywords()
+
+    const keywords = Object.keys(keywordsMap)
+
+    const strHTML = keywords.map((keyword) => {
+        let fontSize
+        if (keywordsMap[keyword] > 10) fontSize = '2'
+        else if (keywordsMap[keyword] > 5) fontSize = '1.5'
+        else fontSize = '1'
+
+        return `<div class="search-keyword" style="font-size: ${fontSize}rem ;">${keyword}</div>`
+    })
+
+    document.querySelector('.common-search-values').innerHTML = strHTML.join('')
 
 }
