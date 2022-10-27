@@ -1,6 +1,6 @@
 'use strict'
 
-var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2, 'happy': 1, 'crazy': 1, 'sarcastic': 1, 'sad': 1, 'animal': 1 }
+var gKeywordSearchCountMap = { 'funny': 8, 'cat': 16, 'baby': 10, 'happy': 1, 'crazy': 45, 'sarcastic': 16, 'sad': 1, 'animal': 4 }
 
 var gImgs = [
     { id: 1, url: './img/meme-imgs/1.jpg', keywords: ['funny', 'politics'] },
@@ -25,25 +25,61 @@ var gImgs = [
 ]
 
 var gMeme = {
-    selectedImgId: 5,
-    selectedLineIdx: -1,
-    lines: []
+    selectedImgId: 0,
+    selectedLineIdx: 0,
+    lines: [
+        {
+            txt: 'Write Something Funny...',
+            size: 35,
+            length: 0,
+            align: 'center',
+            color: 'white',
+            family: 'gImpact',
+            pos: { x: 200, y: 50 },
+            isDrag: false,
+        },
+    ]
 }
 
+var gMemes = []
+
+// CACHE CHECK
+
+if (!loadMemefromStorage()) saveMemeToStorage()
+else gMemes = loadMemefromStorage()
+
+if (!loadKeywordsfromStorage()) saveKeywordsToStorage()
+else gKeywordSearchCountMap = loadKeywordsfromStorage()
+
+// STORAGE
+function saveMemeToStorage() {
+    saveToStorage(MEMES_STORAGE_KEY, gMeme)
+}
+
+function loadMemefromStorage() {
+    return loadFromStorage(MEMES_STORAGE_KEY)
+}
+
+function saveKeywordsToStorage() {
+    saveToStorage(KEYWORDS_STORAGE_KEY, gKeywordSearchCountMap)
+}
+
+function loadKeywordsfromStorage() {
+    return loadFromStorage(KEYWORDS_STORAGE_KEY)
+}
+
+// DATA MODEL FUNCTIONS
 function getMeme() {
     return gMeme
 }
 
 function getImg(id) {
-
     return gImgs.find((img) => img.id === id)
-
 }
 
 function getImages(searchFilter) {
     // if input is empty rreturn all gImages
     if (!searchFilter) return gImgs
-
     //if not turn the value to lower case and filter
     var searchFilter = searchFilter.toLowerCase()
     // console.log(searchFilter)
@@ -54,36 +90,28 @@ function getImages(searchFilter) {
         })
         return bool ? true : false
     })
-
     return imgs
 }
 
 function setMemeImg(idx) {
     gMeme.selectedImgId = idx
-
     const img = getImg(idx)
     updateSearchCount(img.keywords)
-
 }
 
 function setMemeText(lineIdx, text) {
+    console.log(lineIdx, text)
     gMeme.lines[lineIdx].txt = text
 }
 
 function updateSearchCount(keywords) {
-    // console.log(gKeywordSearchCountMap)
-
     keywords.map((keyword) => {
-
         if (gKeywordSearchCountMap.hasOwnProperty(keyword)) {
             gKeywordSearchCountMap[keyword] += 1
-
         } else {
             gKeywordSearchCountMap[keyword] = 1
         }
-
     })
-    // console.log(gKeywordSearchCountMap)
 }
 
 function getKeywords() {
@@ -93,15 +121,13 @@ function getKeywords() {
 //MEME EDITOR
 
 function addLine(width, height) {
-
-
     var x, y
-    const linesCount = gMeme.lines.length
-    if (linesCount === 0) {
+
+    if (gMeme.lines.length === 0) {
         x = width / 2
         y = 50
 
-    } else if (linesCount === 1) {
+    } else if (gMeme.lines.length === 1) {
         x = width / 2
         y = height - 50
 
@@ -116,24 +142,25 @@ function addLine(width, height) {
 
 function createLine(x, y) {
     const newLine = {
-        txt: '',
-        size: 50,
+        txt: 'Tell Me a Joke!',
+        size: 35,
         length: 0,
         align: 'center',
         color: 'white',
-        family: 'Impact',
+        family: 'gImpact',
         pos: { x, y },
+        isDrag: false,
     }
-    // console.log(`newLine:`, newLine)
     gMeme.lines.push(newLine)
     gMeme.selectedLineIdx += 1
-
-
 }
 
 function deleteLine() {
+    if (gMeme.lines.length <= 1) return false
     gMeme.lines.splice([gMeme.selectedLineIdx], 1)
+    return true
 }
+
 function setFamily(font) {
     gMeme.lines[gMeme.selectedLineIdx].family = font
 }
@@ -153,4 +180,20 @@ function setAlign(value) {
 function toggleSelectedLine() {
     if (gMeme.selectedLineIdx === 0) gMeme.selectedLineIdx = gMeme.lines.length - 1
     else gMeme.selectedLineIdx--
+}
+
+function setSelectedLine(lineIdx) {
+    gMeme.selectedLineIdx = lineIdx
+}
+
+function setLineDrag(isDrag) {
+    gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag
+}
+
+function setLinePos(pos) {
+    gMeme.lines[gMeme.selectedLineIdx].pos = pos
+}
+
+function setYPos(value) {
+    gMeme.lines[gMeme.selectedLineIdx].pos.y += value
 }

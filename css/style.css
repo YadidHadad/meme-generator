@@ -1,12 +1,11 @@
 :root {
     /* pallet */
-    --clr4: #000;
-    --clr3: #f0f0f0;
-    --clr2: #b4ad9e;
-    --clr1: #e3e3e3;
+    --clr-2: #000;
+    --clr-1: #E8F9FD;
 
-    --primary: #ff7f00;
-    --secondary: #ffffff;
+    --clr1: #2155CD;
+    --clr2: #0AA1DD;
+    --clr3: #79DAE8;
 
     /* BP */
     --l: 1060px;
@@ -17,7 +16,6 @@
 
 * {
     box-sizing: border-box;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 /* FONTS */
@@ -38,27 +36,34 @@
 /* BASICS */
 
 body {
-    background-color: var(--clr1);
+    background-color: var(--clr-1);
     margin: 0;
     padding: 0;
     height: 100vh;
 }
 
+header {
+    background-color: var(--clr1);
+    height: 100px;
+}
+
 nav {
-    background-color: var(--primary);
-    padding: 4px;
-    font-size: 2em;
+    padding: 10px;
     height: 55px;
+    width: 100%;
+    max-width: var(--l);
+    margin: 0 auto;
 }
 
 nav>button {
-    color: var(--clr1);
+    color: var(--clr-1);
     font-size: 1rem;
+    font-family: gIFrdokaOne;
 }
 
 
 footer {
-    background-color: var(--primary);
+    background-color: var(--clr1);
 
     height: 200px;
     /* position: relative; */
@@ -69,20 +74,35 @@ button {
     text-transform: capitalize;
 }
 
+button,
 input,
 select {
-    height: 3em;
+    height: 60px;
     margin: 0;
-    margin-inline-end: 0.2rem;
+    /* margin-inline-end: 0.2rem; */
+    /* margin-block-end: 1rem; */
     text-align: center;
     border: none;
-    border-bottom: 2px solid var(--clr4);
+    border-bottom: 2px solid var(--clr1);
     /* font-size: 1rem; */
+    font-size: 1rem;
+}
+
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: gIFrdokaOne;
+    color: var(--clr1);
 }
 
 #colorWell,
 select {
-    border: 2px solid var(--clr4);
+    /* border: 2px solid var(--clr-2); */
     border-radius: 1rem;
 }
 
@@ -97,7 +117,8 @@ section {
     width: 100%;
     /* background-color: var(--clr1); */
     /* border: 1px solid black; */
-    max-width: 1024px;
+    max-width: var(--l);
+    min-height: calc(100vh - 300px);
     margin: 3rem auto;
 
     padding: 10px;
@@ -109,7 +130,7 @@ section {
 
 button {
     background: none repeat scroll 0 0 transparent;
-    border: none;
+    /* border: none; */
     padding: 0.5rem;
     margin: 0.5rem;
 }
@@ -117,6 +138,10 @@ button {
 
 
 /* HELPERS */
+
+.full:not(>*) {
+    width: 100%;
+}
 
 .flex {
     display: flex;
@@ -172,22 +197,39 @@ button {
 .logo {
     flex-grow: 1;
     text-transform: uppercase;
-    color: white;
-    color: black;
-    -webkit-text-fill-color: white;
-    /* Will override color (regardless of order) */
+    color: var(--clr-1);
+    font-size: 4em;
+
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    -webkit-text-stroke-color: var(--clr2);
+    font-family: gIFrdokaOne;
 }
 
+[value="gImpact"] {
+    font-family: gImpact;
+}
 
+[value="gBowlbyOne"] {
+    font-family: gBowlbyOne;
+}
+
+[value="gBungee"] {
+    font-family: gBungee;
+}
+
+[value="gIFrdokaOne"] {
+    font-family: gIFrdokaOne;
+}
+
+[value="gRighteous"] {
+    font-family: gRighteous;
+}
 
 /* MEME EDITOR */
 
 canvas {
-    border: 1px solid var(--clr4);
-    border-radius: 2rem;
+    border: 1px solid var(--clr-2);
+    border-radius: 5px;
 }
 
 .canvas-container {
@@ -199,9 +241,20 @@ canvas {
 }
 
 .control-box {
-    background-color: aliceblue;
+    /* background-color: var(--clr3); */
     min-height: 300px;
     width: 400px;
+
+    /* border: 1px solid var(--clr-2); */
+    border-radius: 5px;
+}
+
+.control-box input,
+.control-box button {
+    height: 60px;
+    /* width: 60px; */
+    background-color: var(--clr3);
+    border-radius: 5px;
 }
 
 .control-box>input {
@@ -233,9 +286,15 @@ canvas {
     margin-block-end: 1rem;
 }
 
-.common-search-values>div {
-    margin-inline-start: 1rem;
+.common-search-values {
+    color: var(--clr1);
+    font-family: gIFrdokaOne;
+    text-transform: uppercase;
 }
+
+/* .common-search-values>div {
+    margin-inline-start: 1rem;
+} */
 
 
 .grid-container {
@@ -255,4 +314,8 @@ canvas {
     aspect-ratio: 1/1;
 
     /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+}
+
+.grid-item:hover {
+    outline: 3px solid var(--clr1);
 }

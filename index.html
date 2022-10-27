@@ -12,9 +12,9 @@
 
 <body onload="onInit()">
     <!-- HEADER -->
-    <header class="header">
+    <header class="header full flex justify-between align-center justify-center">
         <nav class="flex justify-center align-center">
-            <div class="logo">the meme generator</div>
+            <h1 class="logo">jokes'sonu!</h1>
             <button class="gallery">gallery</button>
             <button class="memes">memes</button>
             <button class="about">about</button>
@@ -41,7 +41,7 @@
     </section>
 
     <!-- MEME-EDITOR -->
-    <section name="meme-editor" class="flex wrap justify-around  hide">
+    <section name="meme-editor" class="flex wrap justify-around align-center hide">
         <!-- CANVAS -->
         <div class="canvas-container">
             <canvas id="canvas" width="400" height="400">
@@ -49,39 +49,45 @@
 
         <!-- CONTROL BOX -->
         <div class="control-box flex align-center justify-center column ">
-            <input type="text" class="text-editor" value="" placeholder="Add new line to type!"
+            <h2>Let's Play!</h2>
+            <input type="text" class="text-editor" value="" placeholder="Tell me a Joke!"
                 oninput="renderMeme(null, this.value, event)" />
             <div class="line-controls">
                 <button class="line-add"><img src="./img/ICONS/add.png" alt="" class="icon"
                         onclick="onAddLine()"></button>
                 <button class="line-delete" onclick="onDeleteLine()"><img src="./img/ICONS/trash.png" alt=""
                         class="icon"></button>
+                <button class="line-toggle" onclick="onToggleSelectedLine()"><img
+                        src="./img/ICONS/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
+                        class="icon"></button>
             </div>
             <div class="text-controls  flex align-center justify-between w-80">
-                <select id="font-family" onchange="onSetStyle('family',this.value)">
-                    <option value="Impact">Impact</option>
-                    <option value="Arial">Arial</option>
-                    <option value="Verdana">Verdana</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Courier New">Courier New</option>
+                <select id="font-family" onchange="onSetLine('family',this.value)">
+                    <option value="gImpact">Impact</option>
+                    <option value="gBowlbyOne">BowlbyOne</option>
+                    <option value="gBungee">Bungee</option>
+                    <option value="gIFrdokaOne">IFrdokaOne</option>
+                    <option value="gRighteous">Righteous</option>
                 </select>
+                <input type="color" value="#FFFFFF" id="colorWell" oninput=" onSetLine('color',this.value)" />
 
-                <input type="color" value="#FFFFFF" id="colorWell" oninput=" onSetStyle('color',this.value)" />
-                <button class="font-bigger" onclick="onSetStyle('size', 3)"><img
+                <button class="font-bigger" onclick="onSetLine('size', 3)"><img
                         src="./img/ICONS/increase font - icon.png" alt="" class="icon"></button>
-                <button class="font-smaller" onclick="onSetStyle('size', -3)"><img
+                <button class="font-smaller" onclick="onSetLine('size', -3)"><img
                         src="./img/ICONS/decrease font - icon.png" alt="" class="icon"></button>
 
             </div>
             <div class="position-controls flex justify-between w-80">
-                <button class="align-left" onclick="onSetStyle('align', 'right')"><img
+                <button class="align-left" onclick="onSetLine('align', 'right')"><img
                         src="./img/ICONS/align-to-left.png" alt="" class="icon"></button>
                 <button class="align-center"><img src="./img/ICONS/center-text-alignment.png" alt="" class="icon"
-                        onclick="onSetStyle('align', 'center')"></button>
-                <button class="align-right" onclick="onSetStyle('align', 'left')"><img
+                        onclick="onSetLine('align', 'center')"></button>
+                <button class="align-right" onclick="onSetLine('align', 'left')"><img
                         src="./img/ICONS/align-to-right.png" alt="" class="icon"></button>
-                <button class="position-up"><img src="./img/ICONS/arrow-up.png" alt="" class="icon up"></button>
-                <button class="position-down"><img src="./img/ICONS/arrow-up.png" alt="" class="icon down"></button>
+                <button class="position-up"><img src="./img/ICONS/arrow-up.png" alt="" class="icon up"
+                        onclick="onSetLine('moveDown')"></button>
+                <button class="position-down"><img src="./img/ICONS/arrow-up.png" alt="" class="icon down"
+                        onclick="onSetLine('moveUp')"></button>
             </div>
 
 
@@ -102,8 +108,8 @@
         <button class="share">share on facebook</button>
     </section>
 
-    <footer>
-        dsfsfs
+    <footer class="full">
+        <span>all rights reserved 2019</span>
     </footer>
 
     <!-- <script src="./js/service/test.service.js"></script> -->
