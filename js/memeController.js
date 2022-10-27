@@ -84,7 +84,7 @@ function moveLine(dx, dy) {
 }
 
 function getEvPos(ev) {
-    console.log(ev)
+    // console.log(ev)
     let pos = {
         x: ev.offsetX,
         y: ev.offsetY
@@ -125,6 +125,7 @@ function renderGallery(searchFilter) {
     })
 
     imgsGallery.innerHTML = strHTML.join('')
+    if (searchFilter) setGalleryTextInput(searchFilter)
 }
 
 function renderKeywords() {
@@ -139,6 +140,11 @@ function renderKeywords() {
     })
     document.querySelector('.common-search-values').innerHTML = strHTML.join('')
     saveKeywordsToStorage()
+}
+
+function setGalleryTextInput(searchFilter) {
+    const element = document.querySelector('.search')
+    element.value = searchFilter
 }
 
 // CANVAS
@@ -166,7 +172,7 @@ function renderMeme(idx, text) {
         resetMemeTextInput()
     } else {
         lines.map(line => {
-            console.log(`line:`, line)
+            // console.log(`line:`, line)
             const x = line.pos.x
             const y = line.pos.y
             drawText(line, x, y)
@@ -245,6 +251,11 @@ function onMemeLine(text) {
     drawText(text, line, x, y)
 }
 
+function downloadImg(elLink) {
+    const imgContent = gElCanvas.toDataURL('image/jpeg')// image/jpeg the default format
+    elLink.href = imgContent
+}
+
 function resizeCanvas() {
     const elContainer = document.querySelector('.canvas-container')
     gElCanvas.width = elContainer.offsetWidth
@@ -292,6 +303,25 @@ function toggleHide(elementName) {
     document.querySelector(`[name="${elementName}"]`).classList.toggle('hide')
 }
 
+function onShowGallery() {
+    document.querySelector('[name="image-gallery"]').classList.remove('hide')
+    document.querySelector('[name="meme-editor"]').classList.add('hide')
+
+}
+
+function onAlertUser(value) {
+    const el = document.querySelector('[name="modal-alert"]')
+    el.innerHTML = value
+    el.classList.remove('hide')
+
+    setTimeout(() => {
+        document.querySelector('[name="modal-alert"]').classList.add('hide')
+
+    }, 2500);
+
+}
+
+// FONTS
 function setFonts() {
     gImpact = new FontFace('gImpact', 'url(./fonts/impact/impact.ttf)');
     gImpact.load().then(function (font) {

@@ -44,7 +44,6 @@ var gMeme = {
 var gMemes = []
 
 // CACHE CHECK
-
 if (!loadMemefromStorage()) saveMemeToStorage()
 else gMemes = loadMemefromStorage()
 

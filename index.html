@@ -13,11 +13,13 @@
 <body onload="onInit()">
     <!-- HEADER -->
     <header class="header full flex justify-between align-center justify-center">
-        <nav class="flex justify-center align-center">
+        <nav class="nav flex justify-center align-center">
             <h1 class="logo">jokes'sonu!</h1>
-            <button class="gallery">gallery</button>
-            <button class="memes">memes</button>
-            <button class="about">about</button>
+            <div>
+                <button class="gallery" onclick="onShowGallery()">gallery</button>
+                <button class="memes" onclick="onAlertUser('sorry! unavailable')">memes</button>
+                <button class="about" onclick="onAlertUser('sorry! unavailable')">about</button>
+            </div>
         </nav>
     </header>
     <!-- IMAGE-GALLERY -->
@@ -89,8 +91,12 @@
                 <button class="position-down"><img src="./img/ICONS/arrow-up.png" alt="" class="icon down"
                         onclick="onSetLine('moveUp')"></button>
             </div>
+            <div>
+            </div>
 
 
+            <a href="#" class="btn download" onclick="downloadImg(this)" download="my-img.jpg">Download as
+                jpeg</a>
         </div>
 
     </section>
@@ -98,18 +104,21 @@
     <!-- SAVED MEMES -->
     <section name="meme-saved " class=" hide">
         <div class="grid"></div>
-
-
     </section>
 
-    <!-- MODAL -->
+    <!-- MODALS -->
     <section name="modal-share" class=" hide">
         <button class="download">download</button>
         <button class="share">share on facebook</button>
     </section>
 
-    <footer class="full">
-        <span>all rights reserved 2019</span>
+    <section name="modal-alert" class=" hide flex align-center justify-center">
+
+    </section>
+
+    <footer class="full flex column align-center justify-center">
+        <span>all rights reserved 2022</span>
+        <span>deveoped by Yadid Hadad</span>
     </footer>
 
     <!-- <script src="./js/service/test.service.js"></script> -->
