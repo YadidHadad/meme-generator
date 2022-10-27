@@ -21,10 +21,10 @@ function addListeners() {
     addMouseListeners()
     addTouchListeners()
     //Listen for resize ev 
-    window.addEventListener('resize', () => {
-        resizeCanvas()
-        clearCanvas()
-    })
+    // window.addEventListener('resize', () => {
+    //     resizeCanvas()
+    //     clearCanvas()
+    // })
 }
 
 function addMouseListeners() {
@@ -76,7 +76,7 @@ function onUp() {
 // RENDER GALLERY
 
 function renderGallery(searchFilter) {
-    console.log(searchFilter)
+    // console.log(searchFilter)
 
     const imgsGallery = document.querySelector('.grid-container')
     const imgs = getImages(searchFilter)
@@ -96,7 +96,7 @@ function renderKeywords() {
     const keywordsMap = getKeywords()
 
     const keywords = Object.keys(keywordsMap)
-    console.log(keywords)
+    // console.log(keywords)
     const strHTML = keywords.map((keyword) => {
         let fontSize
         if (keywordsMap[keyword] > 10) fontSize = '2'
@@ -127,7 +127,7 @@ function renderMeme(idx, text, ev) {
 
     // render Image
     const elImg = document.getElementById(selectedImgId);
-    console.log((elImg))
+    // console.log((elImg))
     if (elImg) gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
     else return
 
@@ -164,12 +164,12 @@ function resetMemeTextInput() {
 }
 
 function drawText(text, line, x, y) {
-    console.log(`line:`, line)
+    // console.log(`line:`, line)
 
     const textLength = gCtx.measureText(text).width
     line.length = textLength
 
-    gCtx.textBaseline = 'middle'
+    // gCtx.textBaseline = 'middle'
 
     // const text = line
     gCtx.lineWidth = 2
@@ -177,7 +177,7 @@ function drawText(text, line, x, y) {
     gCtx.fillStyle = line.color
     gCtx.textAlign = line.align;
     gCtx.font = `${line.size}px ${line.family}`
-    console.log(`${line.size}px ${line.family}`)
+    // console.log(`${line.size}px ${line.family}`)
     gCtx.fillText(text, x, y) // Draws (fills) a given text at the given (x, y) position.
     gCtx.strokeText(text, x, y) // Draws (strokes) a given text at the given (x, y) position.
     if (textLength > gElCanvas.width - 40) {
@@ -204,7 +204,7 @@ function onMemeLine(text) {
     const { selectedLineIdx, lines } = getMeme()
     const line = lines[selectedLineIdx]
     setMemeText(selectedLineIdx, text)
-    console.log(text)
+    // console.log(text)
     const x = gElCanvas / 2
     const y = 50
     drawText(text, line, x, y)
@@ -224,26 +224,26 @@ function onAddLine() {
     addLine(gElCanvas.width, gElCanvas.height)
     resetMemeTextInput()
 }
+function onDeleteLine() {
+    deleteLine()
+    resetMemeTextInput()
+}
 
-function onSetFont(font) {
-    setFont(font)
-
+function onSetStyle(style, value) {
     const { selectedImgId, selectedLineIdx, lines } = getMeme()
-    if (!lines[selectedLineIdx].txt) return
-    renderMeme(selectedImgId, lines[selectedLineIdx].txt)
+    if (selectedLineIdx < 0) return
 
+    if (style === 'family') setFamily(value)
+    else if (style === 'color') setColor(value)
+    else if (style === 'size') setSize(+value)
+    else if (style === 'align') setAlign(value)
+
+    renderMeme(selectedImgId, lines[selectedLineIdx].txt)
 }
 
 // SHOW HIDE ELEMENTS
 
 function toggleHide(elementName) {
-    console.log('hide')
+    // console.log('hide')
     document.querySelector(`[name="${elementName}"]`).classList.toggle('hide')
 }
-// function hideElement(elementName) {
-//     document.querySelector(`[name="${elementName}"]`).classList.toggle('hide')
-// }
-
-// onShowGallery(){
-
-// }

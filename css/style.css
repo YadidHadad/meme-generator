@@ -1,3 +1,20 @@
+:root {
+    /* pallet */
+    --clr4: #000;
+    --clr3: #f0f0f0;
+    --clr2: #b4ad9e;
+    --clr1: #e3e3e3;
+
+    --primary: #ff7f00;
+    --secondary: #ffffff;
+
+    /* BP */
+    --l: 1060px;
+    --m: 860px;
+    --s: 600px;
+}
+
+
 * {
     box-sizing: border-box;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -5,18 +22,47 @@
 
 /* FONTS */
 
+@font-face {
+    font-family: fa;
+    src: url("/fonts/fa/fa-brands-400.ttf");
+}
+
+.fa::before {
+    font-family: fa;
+}
+
+.fa.facebook::before {
+    content: "\f39e";
+}
+
 /* BASICS */
 
 body {
-    background-color: antiquewhite;
+    background-color: var(--clr1);
     margin: 0;
     padding: 0;
+    height: 100vh;
 }
 
 nav {
-    background-color: aquamarine;
+    background-color: var(--primary);
     padding: 4px;
     font-size: 2em;
+    height: 55px;
+}
+
+nav>button {
+    color: var(--clr1);
+    font-size: 1rem;
+}
+
+
+footer {
+    background-color: var(--primary);
+
+    height: 200px;
+    /* position: relative; */
+    bottom: 0;
 }
 
 button {
@@ -26,17 +72,33 @@ button {
 input,
 select {
     height: 3em;
-    margin-inline: 1em;
+    margin: 0;
+    margin-inline-end: 0.2rem;
     text-align: center;
+    border: none;
+    border-bottom: 2px solid var(--clr4);
+    /* font-size: 1rem; */
 }
 
+#colorWell,
+select {
+    border: 2px solid var(--clr4);
+    border-radius: 1rem;
+}
+
+#colorWell {
+    padding: 0.2rem;
+
+}
+
+
 section {
-    height: 100vh;
+    /* height: 100vh; */
     width: 100%;
-    background-color: blueviolet;
-    border: 1px solid black;
+    /* background-color: var(--clr1); */
+    /* border: 1px solid black; */
     max-width: 1024px;
-    margin: 0 auto;
+    margin: 3rem auto;
 
     padding: 10px;
     position: static;
@@ -51,6 +113,7 @@ button {
     padding: 0.5rem;
     margin: 0.5rem;
 }
+
 
 
 /* HELPERS */
@@ -98,10 +161,11 @@ button {
     /* display: none; */
     position: fixed;
     left: -200%;
-
-
 }
 
+.w-80 {
+    width: 80%;
+}
 
 /* LOGO */
 
@@ -118,19 +182,25 @@ button {
 }
 
 
+
 /* MEME EDITOR */
+
+canvas {
+    border: 1px solid var(--clr4);
+    border-radius: 2rem;
+}
 
 .canvas-container {
     max-height: 400px;
     margin: 0;
     padding: 0;
     aspect-ratio: 1/1;
-    border: 1px solid red;
+
 }
 
 .control-box {
     background-color: aliceblue;
-    height: 400px;
+    min-height: 300px;
     width: 400px;
 }
 
@@ -159,24 +229,29 @@ button {
 
 /* GALLERY */
 
+.gallery-inputs {
+    margin-block-end: 1rem;
+}
+
 .common-search-values>div {
     margin-inline-start: 1rem;
 }
 
 
 .grid-container {
-    padding: 1rem;
+    /* padding: 1rem; */
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-gap: 2px;
+    grid-gap: 0.4rem;
 }
 
 .grid-item {
     width: 100%;
     text-align: center;
     background-color: blueviolet;
-    border: 1px black solid;
+    /* border: 1px black solid; */
+    border-radius: 0.3rem;
     aspect-ratio: 1/1;
 
     /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */

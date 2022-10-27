@@ -22,7 +22,7 @@ var gImgs = [
     { id: 17, url: './img/meme-imgs/17.jpg', keywords: ['funny', 'sarcastic'] },
     { id: 18, url: './img/meme-imgs/18.jpg', keywords: ['funny', 'toys', 'cute'] },
 
-];
+]
 
 var gMeme = {
     selectedImgId: 5,
@@ -46,7 +46,7 @@ function getImages(searchFilter) {
 
     //if not turn the value to lower case and filter
     var searchFilter = searchFilter.toLowerCase()
-    console.log(searchFilter)
+    // console.log(searchFilter)
 
     var imgs = gImgs.filter(img => {
         var bool = img.keywords.find(keyword => {
@@ -71,7 +71,7 @@ function setMemeText(lineIdx, text) {
 }
 
 function updateSearchCount(keywords) {
-    console.log(gKeywordSearchCountMap)
+    // console.log(gKeywordSearchCountMap)
 
     keywords.map((keyword) => {
 
@@ -83,7 +83,7 @@ function updateSearchCount(keywords) {
         }
 
     })
-    console.log(gKeywordSearchCountMap)
+    // console.log(gKeywordSearchCountMap)
 }
 
 function getKeywords() {
@@ -124,13 +124,33 @@ function createLine(x, y) {
         family: 'Impact',
         pos: { x, y },
     }
-    console.log(`newLine:`, newLine)
+    // console.log(`newLine:`, newLine)
     gMeme.lines.push(newLine)
     gMeme.selectedLineIdx += 1
 
 
 }
 
-function setFont(font) {
+function deleteLine() {
+    gMeme.lines.splice([gMeme.selectedLineIdx], 1)
+}
+function setFamily(font) {
     gMeme.lines[gMeme.selectedLineIdx].family = font
+}
+
+function setColor(color) {
+    gMeme.lines[gMeme.selectedLineIdx].color = color
+}
+
+function setSize(value) {
+    gMeme.lines[gMeme.selectedLineIdx].size += value
+}
+
+function setAlign(value) {
+    gMeme.lines[gMeme.selectedLineIdx].align = value
+}
+
+function toggleSelectedLine() {
+    if (gMeme.selectedLineIdx === 0) gMeme.selectedLineIdx = gMeme.lines.length - 1
+    else gMeme.selectedLineIdx--
 }

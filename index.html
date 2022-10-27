@@ -12,8 +12,8 @@
 
 <body onload="onInit()">
     <!-- HEADER -->
-    <header>
-        <nav class="flex justify-center">
+    <header class="header">
+        <nav class="flex justify-center align-center">
             <div class="logo">the meme generator</div>
             <button class="gallery">gallery</button>
             <button class="memes">memes</button>
@@ -22,10 +22,10 @@
     </header>
     <!-- IMAGE-GALLERY -->
     <section name="image-gallery">
-        <div class="gallery-inputs flex row justify-between">
+        <div class="gallery-inputs flex column justify-between">
             <input type="text" class="search" placeholder="What's on your mind?" value=""
                 oninput="renderGallery(this.value)">
-            <div class="common-search-values flex wrap justify-between align-center">
+            <div class="common-search-values flex wrap  justify-between align-center">
                 <div class="search-keyword">funny</div>
                 <div class="search-keyword">cat</div>
                 <div class="search-keyword">baby</div>
@@ -54,31 +54,32 @@
             <div class="line-controls">
                 <button class="line-add"><img src="./img/ICONS/add.png" alt="" class="icon"
                         onclick="onAddLine()"></button>
-                <button class="line-delete"><img src="./img/ICONS/trash.png" alt="" class="icon"></button>
+                <button class="line-delete" onclick="onDeleteLine()"><img src="./img/ICONS/trash.png" alt=""
+                        class="icon"></button>
             </div>
-            <div class="text-controls  flex align-center space-around">
-                <select id="font-family" onchange="onSetFont(this.value)">
+            <div class="text-controls  flex align-center justify-between w-80">
+                <select id="font-family" onchange="onSetStyle('family',this.value)">
                     <option value="Impact">Impact</option>
                     <option value="Arial">Arial</option>
                     <option value="Verdana">Verdana</option>
                     <option value="Times New Roman">Times New Roman</option>
                     <option value="Courier New">Courier New</option>
-                    <option value="serif">serif</option>
-                    <option value="sans-serif">sans-serif</option>
                 </select>
 
-                <input type="color" value="#FFFFFF" id="colorWell" oninput=" onChangeColor(this)" />
-                <button class="font-bigger"><img src="./img/ICONS/increase font - icon.png" alt=""
-                        class="icon"></button>
-                <button class="font-smaller"><img src="./img/ICONS/decrease font - icon.png" alt=""
-                        class="icon"></button>
+                <input type="color" value="#FFFFFF" id="colorWell" oninput=" onSetStyle('color',this.value)" />
+                <button class="font-bigger" onclick="onSetStyle('size', 3)"><img
+                        src="./img/ICONS/increase font - icon.png" alt="" class="icon"></button>
+                <button class="font-smaller" onclick="onSetStyle('size', -3)"><img
+                        src="./img/ICONS/decrease font - icon.png" alt="" class="icon"></button>
 
             </div>
-            <div class="position-controls">
-                <button class="align-left"><img src="./img/ICONS/align-to-left.png" alt="" class="icon"></button>
-                <button class="align-center"><img src="./img/ICONS/center-text-alignment.png" alt=""
-                        class="icon"></button>
-                <button class="align-right"><img src="./img/ICONS/align-to-right.png" alt="" class="icon"></button>
+            <div class="position-controls flex justify-between w-80">
+                <button class="align-left" onclick="onSetStyle('align', 'right')"><img
+                        src="./img/ICONS/align-to-left.png" alt="" class="icon"></button>
+                <button class="align-center"><img src="./img/ICONS/center-text-alignment.png" alt="" class="icon"
+                        onclick="onSetStyle('align', 'center')"></button>
+                <button class="align-right" onclick="onSetStyle('align', 'left')"><img
+                        src="./img/ICONS/align-to-right.png" alt="" class="icon"></button>
                 <button class="position-up"><img src="./img/ICONS/arrow-up.png" alt="" class="icon up"></button>
                 <button class="position-down"><img src="./img/ICONS/arrow-up.png" alt="" class="icon down"></button>
             </div>
@@ -100,6 +101,10 @@
         <button class="download">download</button>
         <button class="share">share on facebook</button>
     </section>
+
+    <footer>
+        dsfsfs
+    </footer>
 
     <!-- <script src="./js/service/test.service.js"></script> -->
     <script src="./js/service/storage.service.js"></script>
