@@ -20,54 +20,9 @@
 }
 
 /* FONTS */
-@import "/css/openmoji.css";
-
-@font-face {
-    font-family: OleoScript-Bold;
-    src: url("./fonts/OleoScript/OleoScript-Bold.ttf");
-}
-
-@font-face {
-    font-family: OleoScript-Regular;
-    src: url("./fonts/OleoScript/OleoScript-Regular.ttf");
-}
-
-@font-face {
-    font-family: fa-brands;
-    src: url("./fonts/fa/fa-brands-400.ttf");
-}
-
-@font-face {
-    font-family: fa-solid;
-    src: url("./fonts/fa/fa-solid-900.ttf");
-}
-
-@font-face {
-    font-family: fa-regular;
-    src: url("./fonts/fa/fa-regular-400.ttf");
-}
-
-.fa-brands::before {
-    font-family: fa-brands;
-}
 
 .fa-solid::before {
-    font-family: fa-solid;
-}
-
-.fa-regular::before {
-    font-family: fa-regular;
-}
-
-.openEmojie {
-    font-size: 40px;
-    font-weight: initial !important;
-    margin: 0;
-    padding: 0;
-}
-
-.fa-brands.facebook::before {
-    content: "\f39e";
+    font-family: gFASolid;
 }
 
 .fa-solid.m-glass::before {
@@ -124,8 +79,6 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    /* background: rgb(2, 0, 36); */
-    /* background: linear-gradient(0deg, var(--light) 80%, var(--secondary) 100%); */
 }
 
 .header {
@@ -146,7 +99,7 @@ nav {
 nav button {
     color: var(--light);
     font-size: 1.5rem;
-    font-family: OleoScript-Regular;
+    font-family: gOleoScriptRegular;
     transition: 0.2s ease-in-out;
 }
 
@@ -178,7 +131,7 @@ select {
     border-bottom: 2px solid var(--secondary);
     font-size: 1rem;
     border-radius: none;
-    font-family: OleoScript-Regular;
+    font-family: gOleoScriptRegular;
     text-decoration: none;
     padding: 5px;
     margin: 5px;
@@ -216,7 +169,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: OleoScript-Regular;
+    font-family: gOleoScriptRegular;
     color: var(--secondary);
 }
 
@@ -323,7 +276,7 @@ button {
     flex-grow: 1;
     color: var(--primary);
     font-size: 4em;
-    font-family: OleoScript-Bold;
+    font-family: gOleoScriptBold;
 }
 
 /* MEME EDITOR */
@@ -420,7 +373,7 @@ canvas {
 }
 
 [value="gIFrdokaOne"] {
-    font-family: OleoScript-Regular;
+    font-family: gOleoScriptRegular;
 }
 
 [value="gRighteous"] {
@@ -434,7 +387,7 @@ canvas {
     border-bottom: 1px solid var(--clr2);
     color: var(--light);
     position: fixed;
-    font-family: OleoScript-Regular;
+    font-family: gOleoScriptRegular;
     text-transform: capitalize;
     text-align: center;
     padding: 1rem;
@@ -472,13 +425,13 @@ canvas {
     border: none;
     background-color: transparent;
     display: inline;
-    font-family: OleoScript-Regular;
+    font-family: gOleoScriptRegular;
     color: var(--primary);
     text-align: start;
 }
 
 .search input::placeholder {
-    font-family: OleoScript-Regular;
+    font-family: gOleoScriptRegular;
     color: var(--primary);
     font-size: 1.5rem;
     text-align: start;

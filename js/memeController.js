@@ -5,7 +5,9 @@ var gBowlbyOne
 var gBungee
 var gIFrdokaOne
 var gRighteous
-var gFA
+var gOleoScriptRegular
+var gOleoScriptBold
+var gFASolid
 
 let gElCanvas = {}
 let gCtx
@@ -400,7 +402,33 @@ function setFonts() {
         console.log('gRighteous loaded');
     })
 
+    gRighteous = new FontFace('gRighteous', 'url(./fonts/Righteous/Righteous-Regular.ttf)');
+    gRighteous.load().then(function (font) {
+        document.fonts.add(font);
+        console.log('gRighteous loaded');
+    })
+
+    gOleoScriptRegular = new FontFace('gOleoScriptRegular', 'url(./fonts/OleoScript/OleoScript-Regular.ttf)');
+    gOleoScriptRegular.load().then(function (font) {
+        document.fonts.add(font);
+        console.log('gOleoScriptRegular loaded');
+    })
+
+    gOleoScriptBold = new FontFace('gOleoScriptBold', 'url(./fonts/OleoScript/OleoScript-Bold.ttf)');
+    gOleoScriptBold.load().then(function (font) {
+        document.fonts.add(font);
+        console.log('gOleoScriptBold loaded');
+    })
+
+    gFASolid = new FontFace('gFASolid', 'url(./fonts/fa/fa-solid-900.ttf)');
+    gFASolid.load().then(function (font) {
+        document.fonts.add(font);
+        console.log('gFASolid loaded');
+    })
 }
+
+
+
 
 // SAVED MEMES
 function onSaveToCache() {
