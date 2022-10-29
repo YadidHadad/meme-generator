@@ -5,7 +5,7 @@ var gBowlbyOne
 var gBungee
 var gIFrdokaOne
 var gRighteous
-var gOpenEmojie
+var gFA
 
 let gElCanvas = {}
 let gCtx
@@ -399,11 +399,7 @@ function setFonts() {
         document.fonts.add(font);
         console.log('gRighteous loaded');
     })
-    gOpenEmojie = new FontFace('gOpenEmojie', 'url(./fonts/openemojie/OpenMoji-Color.ttf)');
-    gOpenEmojie.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gRighteous loaded');
-    })
+
 }
 
 // SAVED MEMES

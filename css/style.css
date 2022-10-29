@@ -24,27 +24,27 @@
 
 @font-face {
     font-family: OleoScript-Bold;
-    src: url("/fonts/OleoScript/OleoScript-Bold.ttf");
+    src: url("./fonts/OleoScript/OleoScript-Bold.ttf");
 }
 
 @font-face {
     font-family: OleoScript-Regular;
-    src: url("/fonts/OleoScript/OleoScript-Regular.ttf");
+    src: url("./fonts/OleoScript/OleoScript-Regular.ttf");
 }
 
 @font-face {
     font-family: fa-brands;
-    src: url("/fonts/fa/fa-brands-400.ttf");
+    src: url("./fonts/fa/fa-brands-400.ttf");
 }
 
 @font-face {
     font-family: fa-solid;
-    src: url("/fonts/fa/fa-solid-900.ttf");
+    src: url("./fonts/fa/fa-solid-900.ttf");
 }
 
 @font-face {
     font-family: fa-regular;
-    src: url("/fonts/fa/fa-regular-400.ttf");
+    src: url("./fonts/fa/fa-regular-400.ttf");
 }
 
 .fa-brands::before {
