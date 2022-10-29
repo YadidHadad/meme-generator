@@ -7,29 +7,31 @@ var gImgs = [
     { id: 2, url: './img/meme-imgs/2.jpg', keywords: ['dog', 'puppy', 'cute', 'animal'] },
     { id: 3, url: './img/meme-imgs/3.jpg', keywords: ['dog', 'puppy', 'cute', 'baby', 'animal'] },
     { id: 4, url: './img/meme-imgs/4.jpg', keywords: ['kitten', 'cat', 'cute', 'animal'] },
-    { id: 5, url: './img/meme-imgs/5.jpg', keywords: ['baby', 'sarcastic'] },
-    { id: 6, url: './img/meme-imgs/6.jpg', keywords: ['arcastic', 'funny'] },
-    { id: 7, url: './img/meme-imgs/7.jpg', keywords: ['baby', 'cute', 'shock'] },
-    { id: 8, url: './img/meme-imgs/8.jpg', keywords: ['sarcastic', 'funny'] },
-    { id: 9, url: './img/meme-imgs/9.jpg', keywords: ['sarcastic', 'baby', 'cute', 'funny'] },
-    { id: 10, url: './img/meme-imgs/10.jpg', keywords: ['funny', 'politics'] },
-    { id: 11, url: './img/meme-imgs/11.jpg', keywords: ['gay', 'sarcastic', 'love', 'funny'] },
-    { id: 12, url: './img/meme-imgs/12.jpg', keywords: ['sarcastic', 'funny'] },
-    { id: 13, url: './img/meme-imgs/13.jpg', keywords: ['happy', 'toast', 'drink', 'sarcastic'] },
-    { id: 14, url: './img/meme-imgs/14.jpg', keywords: ['sarcastic', 'crazy'] },
-    { id: 15, url: './img/meme-imgs/15.jpg', keywords: ['funny', 'sarcastic'] },
-    { id: 16, url: './img/meme-imgs/16.jpg', keywords: ['funny', 'sarcastic'] },
-    { id: 17, url: './img/meme-imgs/17.jpg', keywords: ['funny', 'sarcastic'] },
-    { id: 18, url: './img/meme-imgs/18.jpg', keywords: ['funny', 'toys', 'cute'] },
+    { id: 5, url: './img/meme-imgs/5.jpg', keywords: ['baby', 'sarcastic'], },
+    { id: 6, url: './img/meme-imgs/6.jpg', keywords: ['arcastic', 'funny'], },
+    { id: 7, url: './img/meme-imgs/7.jpg', keywords: ['baby', 'cute', 'shock'], },
+    { id: 8, url: './img/meme-imgs/8.jpg', keywords: ['sarcastic', 'funny'], },
+    { id: 9, url: './img/meme-imgs/9.jpg', keywords: ['sarcastic', 'baby', 'cute', 'funny'], },
+    { id: 10, url: './img/meme-imgs/10.jpg', keywords: ['funny', 'politics'], },
+    { id: 11, url: './img/meme-imgs/11.jpg', keywords: ['gay', 'sarcastic', 'love', 'funny'], },
+    { id: 12, url: './img/meme-imgs/12.jpg', keywords: ['sarcastic', 'funny'], },
+    { id: 13, url: './img/meme-imgs/13.jpg', keywords: ['happy', 'toast', 'drink', 'sarcastic'], },
+    { id: 14, url: './img/meme-imgs/14.jpg', keywords: ['sarcastic', 'crazy'], },
+    { id: 15, url: './img/meme-imgs/15.jpg', keywords: ['funny', 'sarcastic'], },
+    { id: 16, url: './img/meme-imgs/16.jpg', keywords: ['funny', 'sarcastic'], },
+    { id: 17, url: './img/meme-imgs/17.jpg', keywords: ['funny', 'sarcastic'], },
+    { id: 18, url: './img/meme-imgs/18.jpg', keywords: ['funny', 'toys', 'cute'], },
 
 ]
 
 var gMeme = {
-    selectedImgId: 0,
+    id: 'jhsdh',
+    selectedImgId: 5,
+    imgAspectRatio: 1,
     selectedLineIdx: 0,
     lines: [
         {
-            txt: 'Write Something Funny...',
+            txt: 'Write Something Funny',
             size: 35,
             length: 0,
             align: 'center',
@@ -41,21 +43,87 @@ var gMeme = {
     ]
 }
 
-var gMemes = []
+var gMemes = [
+    {
+        "id": "vhvcB",
+        "selectedImgId": 9,
+        "imgAspectRatio": 0.6607717041800643,
+        "selectedLineIdx": 0,
+        "lines": [
+            {
+                "txt": "Ha HA Ha!",
+                "size": 35,
+                "length": 133.1298828125,
+                "align": "center",
+                "color": "white",
+                "family": "gImpact",
+                "pos": {
+                    "x": 198,
+                    "y": 41
+                },
+                "isDrag": false
+            },
+            {
+                "txt": "😍",
+                "size": 55,
+                "length": 75.517578125,
+                "align": "center",
+                "color": "white",
+                "family": "gImpact",
+                "pos": {
+                    "x": 344,
+                    "y": 200
+                },
+                "isDrag": false
+            },
+            {
+                "txt": "🐬",
+                "size": 85,
+                "length": 116.708984375,
+                "align": "center",
+                "color": "white",
+                "family": "gImpact",
+                "pos": {
+                    "x": 330,
+                    "y": 113
+                },
+                "isDrag": false
+            },
+            {
+                "txt": "👻",
+                "size": 55,
+                "length": 75.517578125,
+                "align": "center",
+                "color": "white",
+                "family": "gImpact",
+                "pos": {
+                    "x": 53,
+                    "y": 198
+                },
+                "isDrag": false
+            }
+        ]
+    }
+
+]
 
 // CACHE CHECK
-if (!loadMemefromStorage()) saveMemeToStorage()
-else gMemes = loadMemefromStorage()
+function loadSaves() {
 
-if (!loadKeywordsfromStorage()) saveKeywordsToStorage()
-else gKeywordSearchCountMap = loadKeywordsfromStorage()
+    if (!loadMemesfromStorage()) saveMemesToStorage()
+    else gMemes = loadMemesfromStorage()
 
-// STORAGE
-function saveMemeToStorage() {
-    saveToStorage(MEMES_STORAGE_KEY, gMeme)
+    if (!loadKeywordsfromStorage()) saveKeywordsToStorage()
+    else gKeywordSearchCountMap = loadKeywordsfromStorage()
+
 }
 
-function loadMemefromStorage() {
+// STORAGE
+function saveMemesToStorage() {
+    saveToStorage(MEMES_STORAGE_KEY, gMemes)
+}
+
+function loadMemesfromStorage() {
     return loadFromStorage(MEMES_STORAGE_KEY)
 }
 
@@ -92,14 +160,17 @@ function getImages(searchFilter) {
     return imgs
 }
 
-function setMemeImg(idx) {
+function setMemeImg(idx, url) {
+    const aspectRatio = getAspectRatio(url)
+
     gMeme.selectedImgId = idx
+    gMeme.imgAspectRatio = aspectRatio
     const img = getImg(idx)
     updateSearchCount(img.keywords)
 }
 
 function setMemeText(lineIdx, text) {
-    console.log(lineIdx, text)
+    // console.log(lineIdx, text)
     gMeme.lines[lineIdx].txt = text
 }
 
@@ -138,10 +209,10 @@ function addLine(width, height) {
     createLine(x, y)
 }
 
-
 function createLine(x, y) {
+
     const newLine = {
-        txt: 'Tell Me a Joke!',
+        txt: 'Write Something Funny',
         size: 35,
         length: 0,
         align: 'center',
@@ -195,4 +266,43 @@ function setLinePos(pos) {
 
 function setYPos(value) {
     gMeme.lines[gMeme.selectedLineIdx].pos.y += value
+}
+
+// SAVE
+function saveMemeToCache() {
+    gMemes.unshift(gMeme)
+    saveMemesToStorage()
+    gMemes = loadMemesfromStorage()
+
+}
+
+function getSavedMemes() {
+    return gMemes
+
+}
+
+function setCurrMemeToRender(meme = null) {
+    gMeme = meme
+
+    const memeId = makeid(5)
+    if (meme === null) {
+        gMeme = {
+            id: memeId,
+            selectedImgId: 1,
+            imgAspectRatio: 1.00,
+            selectedLineIdx: 0,
+            lines: [
+                {
+                    txt: 'Write Something Funny',
+                    size: 35,
+                    length: 0,
+                    align: 'center',
+                    color: 'white',
+                    family: 'gImpact',
+                    pos: { x: 200, y: 50 },
+                    isDrag: false,
+                },
+            ]
+        }
+    }
 }

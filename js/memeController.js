@@ -5,6 +5,7 @@ var gBowlbyOne
 var gBungee
 var gIFrdokaOne
 var gRighteous
+var gOpenEmojie
 
 let gElCanvas = {}
 let gCtx
@@ -13,14 +14,16 @@ const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 
 function onInit() {
     setFonts()
+    loadSaves()
+    setCanvas('#canvas')
 
-    gElCanvas = resizeCanvas()
-    gElCanvas = document.querySelector('#canvas')
-    gCtx = gElCanvas.getContext('2d')
 
     renderGallery()
     renderKeywords()
     addListeners()
+
+
+
 }
 
 // EVENT LISTENERES
@@ -46,13 +49,17 @@ function onDown(ev) {
     // console.log('Im from onDown')
     const pos = getEvPos(ev)
     const newSelectedLineIdx = lineClicked(pos)
-    if (newSelectedLineIdx < 0) return
+    if (newSelectedLineIdx < 0) {
+        document.body.style.cursor = 'cursor'
+        return
+    }
     setSelectedLine(newSelectedLineIdx)
     setMemeTextInput()
     setLineDrag(true)
 
     drawFrame()
-    document.body.style.cursor = 'grabbing'
+    gElCanvas.style.cursor = 'grabbing'
+    // document.canvas.style.cursor = 'grabbing'
 }
 
 function onMove(ev) {
@@ -72,7 +79,7 @@ function onMove(ev) {
 function onUp() {
     // console.log('Im from onUp')
     setLineDrag(false)
-    document.body.style.cursor = 'cursor'
+    gElCanvas.style.cursor = 'grab'
     renderMeme()
 }
 
@@ -84,7 +91,6 @@ function moveLine(dx, dy) {
 }
 
 function getEvPos(ev) {
-    // console.log(ev)
     let pos = {
         x: ev.offsetX,
         y: ev.offsetY
@@ -115,13 +121,13 @@ function lineClicked(clickedPos) {
     return selectedLineIdx
 }
 
-// RENDER GALLERY
+// GALLERY
 function renderGallery(searchFilter) {
-    const imgsGallery = document.querySelector('.grid-container')
+    const imgsGallery = document.querySelector('.grid-images-container')
     const imgs = getImages(searchFilter)
     const strHTML = imgs.map((img) => {
         return `
-                <img id="${img.id}" class="grid-item" current-meme-img" src=${img.url} alt="" onClick="onSetMemeImg(${img.id});renderMeme(${img.id});">`
+                <img id="${img.id}" class="grid-item" current-meme-img" src=${img.url} alt="" onClick="onSetMemeImg(${img.id}, this.src);setCanvas('#canvas');renderMeme(${img.id}, null, null);">`
     })
 
     imgsGallery.innerHTML = strHTML.join('')
@@ -148,12 +154,29 @@ function setGalleryTextInput(searchFilter) {
 }
 
 // CANVAS
-function renderMeme(idx, text) {
+
+function setCanvas(canvasId) {
+    // debugger
+    if (canvasId === '#canvas') gElCanvas = resizeCanvas()
+
+    gElCanvas = document.querySelector(canvasId)
+    gCtx = gElCanvas.getContext('2d')
+
+    const { imgAspectRatio } = getMeme()
+
+    gElCanvas.height *= imgAspectRatio
+}
+
+function renderMeme(idx, text, isSticker = false) {
+    if (isSticker) {
+        addLine(gElCanvas.width, gElCanvas.height)
+        setSize(20)
+    }
+
     //GET DATA
     var { selectedImgId, lines, selectedLineIdx } = getMeme()
 
     // UPDATE MODEL
-    if (idx) setMemeImg(idx)
     if (text) setMemeText(selectedLineIdx, text)
 
     //GET DATA
@@ -172,17 +195,20 @@ function renderMeme(idx, text) {
         resetMemeTextInput()
     } else {
         lines.map(line => {
-            // console.log(`line:`, line)
             const x = line.pos.x
             const y = line.pos.y
             drawText(line, x, y)
         })
     }
     if (lines[selectedLineIdx].isDrag) drawFrame()
+
+
 }
 
-function onSetMemeImg(idx) {
-    setMemeImg(idx)
+function onSetMemeImg(idx, url) {
+
+    setCurrMemeToRender()
+    setMemeImg(idx, url)
     toggleHide('meme-editor')
     toggleHide('image-gallery')
 }
@@ -286,27 +312,45 @@ function onToggleSelectedLine() {
 }
 
 function onSetLine(style, value) {
+    // debugger
     const { selectedImgId, selectedLineIdx, lines } = getMeme()
     if (selectedLineIdx < 0) return
-    if (style === 'family') setFamily(value)
-    else if (style === 'color') setColor(value)
-    else if (style === 'size') setSize(+value)
-    else if (style === 'align') setAlign(value)
-    else if (style === 'moveUp') setYPos(10)
-    else if (style === 'moveDown') setYPos(-10)
+    if (style === 'family') {
+        setFamily(value)
+        document.querySelector('.text-editor').style.fontFamily = value
+    }
+    else if (style === 'color') {
+        setColor(value)
+        document.querySelector('.color-picker').style.backgroundColor = value
+    }
+    else if (style === 'size') { setSize(+value) }
+    else if (style === 'align') { setAlign(value) }
+    else if (style === 'moveUp') { setYPos(-10) }
+    else if (style === 'moveDown') { setYPos(10) }
 
-    renderMeme(selectedImgId, lines[selectedLineIdx].txt)
+    renderMeme()
 }
 
 // SHOW HIDE ELEMENTS
 function toggleHide(elementName) {
     document.querySelector(`[name="${elementName}"]`).classList.toggle('hide')
 }
-
 function onShowGallery() {
     document.querySelector('[name="image-gallery"]').classList.remove('hide')
     document.querySelector('[name="meme-editor"]').classList.add('hide')
+    document.querySelector('[name="memes-saved"]').classList.add('hide')
+}
+function showEditor() {
+    document.querySelector('[name="image-gallery"]').classList.add('hide')
+    document.querySelector('[name="meme-editor"]').classList.remove('hide')
+    document.querySelector('[name="memes-saved"]').classList.add('hide')
 
+}
+function onShowSavedMemes() {
+    document.querySelector('[name="image-gallery"]').classList.add('hide')
+    document.querySelector('[name="meme-editor"]').classList.add('hide')
+    document.querySelector('[name="memes-saved"]').classList.remove('hide')
+    renderSavedMemes()
 }
 
 function onAlertUser(value) {
@@ -327,7 +371,6 @@ function setFonts() {
     gImpact.load().then(function (font) {
         document.fonts.add(font);
         console.log('gImpact loaded');
-
     })
 
     gBowlbyOne = new FontFace('gBowlbyOne', 'url(./fonts/BowlbyOne/BowlbyOne-Regular.ttf)');
@@ -356,5 +399,51 @@ function setFonts() {
         document.fonts.add(font);
         console.log('gRighteous loaded');
     })
+    gOpenEmojie = new FontFace('gOpenEmojie', 'url(./fonts/openemojie/OpenMoji-Color.ttf)');
+    gOpenEmojie.load().then(function (font) {
+        document.fonts.add(font);
+        console.log('gRighteous loaded');
+    })
 }
 
+// SAVED MEMES
+function onSaveToCache() {
+    console.log('save')
+    saveMemeToCache()
+
+}
+
+function renderSavedMemes() {
+    // debugger
+    const savedMemesGallery = document.querySelector('.saved-container')
+    const savedMemes = getSavedMemes()
+
+    // RENDER CANVASES
+    const savedCanvasHtml = savedMemes.map((savedMeme) => `<canvas id=${savedMeme.id} width="${+savedMeme.imgAspectRatio * 400}" height="400" onclick="onEditMeme(this.id)"></canvas>`
+    )
+    savedMemesGallery.innerHTML = savedCanvasHtml.join('')
+
+    // RENDER MEMES ON CANVASES
+    savedMemes.map((savedMeme) => {
+        setCanvas(`#${savedMeme.id}`)
+        setCurrMemeToRender(savedMeme)
+        console.log(`gMeme:`, gMeme)
+        renderMeme()
+    })
+    gElCanvas = {}
+    setCanvas('#canvas')
+}
+
+function onEditMeme(id) {
+    // debugger
+    console.log('show editor')
+
+    const savedMemes = getSavedMemes()
+    console.log(getSavedMemes())
+
+    const meme = savedMemes.find(meme => meme.id === id)
+    setCurrMemeToRender(meme)
+    setCanvas('#canvas')
+    renderMeme()
+    showEditor()
+}

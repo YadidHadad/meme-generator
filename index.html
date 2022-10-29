@@ -11,23 +11,28 @@
 </head>
 
 <body onload="onInit()">
+    <div class="main-screen full" id="screen" onclick="hideShareModal()"></div>
     <!-- HEADER -->
     <header class="header full flex justify-between align-center justify-center">
         <nav class="nav flex justify-center align-center">
-            <h1 class="logo">jokes'sonu!</h1>
+            <h1 class="logo">FunnyMeme</h1>
             <div>
                 <button class="gallery" onclick="onShowGallery()">gallery</button>
-                <button class="memes" onclick="onAlertUser('sorry! unavailable')">memes</button>
-                <button class="about" onclick="onAlertUser('sorry! unavailable')">about</button>
+                <button class="memes" onclick=" onShowSavedMemes()">memes</button>
+                <!-- <button class="about" onclick="onAlertUser('sorry! unavailable')">about</button> -->
             </div>
         </nav>
     </header>
     <!-- IMAGE-GALLERY -->
     <section name="image-gallery">
-        <div class="gallery-inputs flex column justify-between">
-            <input type="text" class="search" placeholder="What's on your mind?" value=""
-                oninput="renderGallery(this.value)">
-            <div class="common-search-values flex wrap  justify-between align-center">
+        <div class="gallery-inputs flex row justify-between align-center">
+            <div class="search flex row justify-center align-center">
+                <input type="text" placeholder="What's up?" value="" oninput="renderGallery(this.value)" />
+                <span class="fa-solid m-glass"></span>
+
+            </div>
+
+            <div class="common-search-values flex wrap  justify-around align-center">
                 <div class="search-keyword">funny</div>
                 <div class="search-keyword">cat</div>
                 <div class="search-keyword">baby</div>
@@ -37,7 +42,7 @@
                 <div class="search-keyword">sad</div>
             </div>
         </div>
-        <div class="grid-container">
+        <div class="grid-images-container">
             <!-- MEMES GALLERY -->
         </div>
     </section>
@@ -49,21 +54,20 @@
             <canvas id="canvas" width="400" height="400">
         </div>
 
-        <!-- CONTROL BOX -->
-        <div class="control-box flex align-center justify-center column ">
-            <h2>Let's Play!</h2>
-            <input type="text" class="text-editor" value="" placeholder="Tell me a Joke!"
-                oninput="renderMeme(null, this.value, event)" />
-            <div class="line-controls">
-                <button class="line-add"><img src="./img/ICONS/add.png" alt="" class="icon"
-                        onclick="onAddLine()"></button>
-                <button class="line-delete" onclick="onDeleteLine()"><img src="./img/ICONS/trash.png" alt=""
-                        class="icon"></button>
-                <button class="line-toggle" onclick="onToggleSelectedLine()"><img
-                        src="./img/ICONS/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
-                        class="icon"></button>
+        <!-- CONTROLS BOX -->
+        <div class="controls-box flex align-center justify-center column ">
+            <div class="line-controls flex justify-between w-100">
+
+                <input type="text" class="text-editor flex justify-between w-100" value=""
+                    placeholder="Write Something Funny" oninput="renderMeme(null, this.value, false)" />
             </div>
-            <div class="text-controls  flex align-center justify-between w-80">
+            <div class="line-controls flex justify-around">
+                <button class="line-add" onclick="onAddLine()"><span class="fa-solid new"></span></button>
+                <button class="line-toggle" onclick="onToggleSelectedLine()"><span
+                        class="fa-solid double-arrows"></span></button>
+                <button class="line-delete" onclick="onDeleteLine()"><span class="fa-solid trash"></span></button>
+            </div>
+            <div class="text-controls  flex justify-between  w-100">
                 <select id="font-family" onchange="onSetLine('family',this.value)">
                     <option value="gImpact">Impact</option>
                     <option value="gBowlbyOne">BowlbyOne</option>
@@ -71,45 +75,67 @@
                     <option value="gIFrdokaOne">IFrdokaOne</option>
                     <option value="gRighteous">Righteous</option>
                 </select>
-                <input type="color" value="#FFFFFF" id="colorWell" oninput=" onSetLine('color',this.value)" />
+                <button class="color-picker">
+                    <input type="color" value="#FFFFFF" id="colorWell" oninput=" onSetLine('color',this.value)" />
+                </button>
 
-                <button class="font-bigger" onclick="onSetLine('size', 3)"><img
-                        src="./img/ICONS/increase font - icon.png" alt="" class="icon"></button>
-                <button class="font-smaller" onclick="onSetLine('size', -3)"><img
-                        src="./img/ICONS/decrease font - icon.png" alt="" class="icon"></button>
+                <button class="font-bigger" onclick="onSetLine('size', 3)">A<span class="fa-solid plus"></span></button>
+                <button class="font-smaller" onclick="onSetLine('size', -3)">A<span
+                        class="fa-solid minus"></span></button>
 
             </div>
-            <div class="position-controls flex justify-between w-80">
-                <button class="align-left" onclick="onSetLine('align', 'right')"><img
-                        src="./img/ICONS/align-to-left.png" alt="" class="icon"></button>
-                <button class="align-center"><img src="./img/ICONS/center-text-alignment.png" alt="" class="icon"
-                        onclick="onSetLine('align', 'center')"></button>
-                <button class="align-right" onclick="onSetLine('align', 'left')"><img
-                        src="./img/ICONS/align-to-right.png" alt="" class="icon"></button>
-                <button class="position-up"><img src="./img/ICONS/arrow-up.png" alt="" class="icon up"
-                        onclick="onSetLine('moveDown')"></button>
-                <button class="position-down"><img src="./img/ICONS/arrow-up.png" alt="" class="icon down"
-                        onclick="onSetLine('moveUp')"></button>
+            <div class="position-controls flex justify-between  w-100">
+                <button class="align-left" onclick="onSetLine('align', 'right')"><span
+                        class="fa-solid align-right"></span></button>
+                <button class="align-center" onclick="onSetLine('align', 'center')"><span
+                        class="fa-solid align-center"></span></button>
+                <button class="align-right" onclick="onSetLine('align', 'left')"><span
+                        class="fa-solid align-left"></span></button>
+                <button class="position-up" onclick="onSetLine('moveDown')"><span
+                        class="fa-solid arrow-down"></span></button>
+                <button class="position-down" onclick="onSetLine('moveUp')"><span
+                        class="fa-solid arrow-up"></span></button>
             </div>
             <div>
             </div>
+            <div class="stickers flex wrap justify-center w-100 ">
+                <span class="openEmojie" onclick="renderMeme(null, '😀', true)">😀</span>
+                <span class="openEmojie" onclick="renderMeme(null, '😍', true)">😍</span>
+                <span class="openEmojie" onclick="renderMeme(null, '😎', true)">😎</span>
+                <span class="openEmojie" onclick="renderMeme(null, '😈', true)">😈</span>
+                <span class="openEmojie" onclick="renderMeme(null, '👻', true)">👻</span>
+                <span class="openEmojie" onclick="renderMeme(null, '👍', true)">👍</span>
+                <span class="openEmojie" onclick="renderMeme(null, '💋', true)">💋</span>
+                <span class="openEmojie" onclick="renderMeme(null, '👀', true)">👀</span>
+                <span class="openEmojie" onclick="renderMeme(null, '🐬', true)">🐬</span>
+                <span class="openEmojie" onclick="renderMeme(null, '⭐️', true)">⭐️</span>
+                <span class="openEmojie" onclick="renderMeme(null, '💥', true)">💥</span>
+                <span class="openEmojie" onclick="renderMeme(null, '🍆', true)">🍆</span>
+                <span class="openEmojie" onclick="renderMeme(null, '🍑', true)">🍑</span>
+                <span class="openEmojie" onclick="renderMeme(null, '🍒', true)">🍒</span>
+            </div>
+            <div class="line-controls flex justify-center w-100">
+                <a href="#" class="btn download" onclick="downloadImg(this)" download="my-img.jpg">download</a>
+                <a href="#" class="btn download" onclick="uploadImg()">share</a>
+            </div>
+            <div class="line-controls flex justify-center w-100">
+                <!-- <a href="#" class="btn download" onclick="downloadImg(this)" download="my-img.jpg">download</a> -->
+                <a href="#" class="btn download" onclick="onSaveToCache()">save</a>
+            </div>
 
-
-            <a href="#" class="btn download" onclick="downloadImg(this)" download="my-img.jpg">Download as
-                jpeg</a>
         </div>
 
     </section>
 
     <!-- SAVED MEMES -->
-    <section name="meme-saved " class=" hide">
-        <div class="grid"></div>
+    <section name="memes-saved" class=" hide">
+        <div class="saved-container flex justify-center wrap">
+            <!-- MEMES GALLERY -->
+        </div>
     </section>
 
     <!-- MODALS -->
-    <section name="modal-share" class=" hide">
-        <button class="download">download</button>
-        <button class="share">share on facebook</button>
+    <section name="modal-share" class="share hide">
     </section>
 
     <section name="modal-alert" class=" hide flex align-center justify-center">
@@ -121,7 +147,8 @@
         <span>deveoped by Yadid Hadad</span>
     </footer>
 
-    <!-- <script src="./js/service/test.service.js"></script> -->
+    <script src="./js/service/upload.service.js"></script>
+    <script src="./js/service/utils.service.js"></script>
     <script src="./js/service/storage.service.js"></script>
     <script src="./js/service/meme.service.js"></script>
     <script src="./js/memeController.js"></script>
