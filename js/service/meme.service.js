@@ -26,24 +26,7 @@ var gImgs = [
     { id: 18, url: './img/meme-imgs/18.jpg', keywords: ['funny', 'toys', 'cute'], },
 
 ]
-var gMeme = {
-    id: 'jhsdh',
-    selectedImgId: 5,
-    imgAspectRatio: 1,
-    selectedLineIdx: 0,
-    lines: [
-        {
-            txt: 'Write Something Funny',
-            size: 35,
-            length: 0,
-            align: 'center',
-            color: 'white',
-            family: 'gImpact',
-            pos: { x: 200, y: 50 },
-            isDrag: false,
-        },
-    ]
-}
+var gMeme
 
 var gMemes
 
@@ -78,6 +61,27 @@ function loadKeywordsfromStorage() {
 }
 
 // DATA MODEL FUNCTIONS
+
+function createMeme() {
+    gMeme = {
+        id: 'jhsdh',
+        selectedImgId: 5,
+        imgAspectRatio: 1,
+        selectedLineIdx: 0,
+        lines: [
+            {
+                txt: 'Write Something Funny',
+                size: 35,
+                length: 0,
+                align: 'center',
+                color: 'white',
+                family: 'gImpact',
+                pos: { x: 200, y: 50 },
+                isDrag: false,
+            },
+        ]
+    }
+}
 function getMeme() {
     return gMeme
 }
@@ -87,12 +91,8 @@ function getImg(id) {
 }
 
 function getImages(searchFilter) {
-    // if input is empty rreturn all gImages
     if (!searchFilter) return gImgs
-    //if not turn the value to lower case and filter
     var searchFilter = searchFilter.toLowerCase()
-    // console.log(searchFilter)
-
     var imgs = gImgs.filter(img => {
         var bool = img.keywords.find(keyword => {
             return keyword.startsWith(searchFilter)
@@ -103,11 +103,12 @@ function getImages(searchFilter) {
 }
 
 function setMemeImg(idx, url) {
+    createMeme()
+    gMeme['url'] = url
     const aspectRatio = getAspectRatio(url)
 
     gMeme.selectedImgId = idx
     gMeme.imgAspectRatio = aspectRatio
-
 }
 
 function setMemeText(lineIdx, txt) {
@@ -115,16 +116,13 @@ function setMemeText(lineIdx, txt) {
 }
 
 function updateSearchCount(keyword) {
-
     if (gKeywordSearchCountMap.hasOwnProperty(keyword)) {
         gKeywordSearchCountMap[keyword] += 1
     } else {
         gKeywordSearchCountMap[keyword] = 1
     }
-
     saveKeywordsToStorage()
     gKeywordSearchCountMap = loadKeywordsfromStorage()
-
 }
 
 function getKeywords() {

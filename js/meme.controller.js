@@ -1,8 +1,9 @@
 'use strict'
 
-let gElCanvas = {}
+let gElCanvas
 let gCtx
 let gStartPos
+let gUploadSrc
 
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 
@@ -126,7 +127,7 @@ function renderGallery(searchFilter) {
     const imgs = getImages(searchFilter)
     const strHTML = imgs.map((img) => {
         return `
-                <img id="${img.id}" class="grid-item" current-meme-img" src=${img.url} alt="" onClick="onSetMemeImg(${img.id}, this.src);setCanvas('#canvas');renderMeme(${img.id}, null, null);">`
+                <img id="${img.id}" class="grid-item" current-meme-img" src=${img.url} alt="" onClick="onSetMemeImg(${img.id}, this.src);renderMeme(${img.id}, null, null);">`
     })
 
     imgsGallery.innerHTML = strHTML.join('')
@@ -157,13 +158,19 @@ function setCanvas() {
     // debugger
     gElCanvas = document.querySelector('#canvas')
     gCtx = gElCanvas.getContext('2d')
+}
 
-    const { imgAspectRatio } = getMeme()
+function setCanvasAspectRatio() {
 
-    gElCanvas.height *= imgAspectRatio
+    const { url } = getMeme()
+
+    gElCanvas.height = gElCanvas.width
+    gElCanvas.height *= getAspectRatio(url)
+
 }
 
 function renderMeme(idx, text, isSticker = false) {
+
     if (isSticker) {
         addLine(gElCanvas.width, gElCanvas.height)
         setSize(20)
@@ -171,6 +178,7 @@ function renderMeme(idx, text, isSticker = false) {
 
     //GET DATA
     var { selectedImgId, lines, selectedLineIdx } = getMeme()
+
 
     // UPDATE MODEL
     if (text) setMemeText(selectedLineIdx, text)
@@ -182,9 +190,14 @@ function renderMeme(idx, text, isSticker = false) {
     clearCanvas()
 
     // render Image
-    const elImg = document.getElementById(selectedImgId)
-    if (elImg) renderImg(elImg)
-    else return
+    if (gUploadSrc) {
+        const img = new Image()
+        img.src = gUploadSrc
+        renderImg(img)
+    } else {
+        const elImg = document.getElementById(selectedImgId)
+        if (elImg) renderImg(elImg)
+    }
 
     // render text lines
     if (lines.length < 1) {
@@ -200,7 +213,10 @@ function renderMeme(idx, text, isSticker = false) {
 }
 
 function onSetMemeImg(idx, url) {
+    debugger
     setMemeImg(idx, url)
+    setCanvas()
+    setCanvasAspectRatio()
     showEditor()
 }
 
@@ -273,7 +289,6 @@ function renderImg(img) {
     gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
 }
 
-
 function resizeCanvas() {
     const elContainer = document.querySelector('.canvas-container')
     gElCanvas.width = elContainer.offsetWidth
@@ -328,6 +343,7 @@ function onShowGallery() {
     document.querySelector('[name="image-gallery"]').classList.remove('hide')
     document.querySelector('[name="meme-editor"]').classList.add('hide')
     document.querySelector('[name="memes-saved"]').classList.add('hide')
+    gUploadSrc = null
 }
 
 function showEditor() {
@@ -349,13 +365,6 @@ function alertUser(value) {
     el.innerHTML = value
     el.classList.remove('hide')
     document.querySelector('.main-screen').classList.add('show-screen')
-
-    setTimeout(() => {
-        document.querySelector('[name="modal-alert"]').classList.add('hide')
-        document.querySelector('.main-screen').classList.remove('show-screen')
-
-    }, 2500)
-
 }
 
 function showShareModal() {
@@ -364,6 +373,7 @@ function showShareModal() {
 }
 
 function onHideModals() {
+    document.querySelector('[name="modal-alert"]').classList.add('hide')
     document.querySelector('[name="modal-share"]').classList.add('hide')
     document.querySelector('[name="modal-upload"]').classList.add('hide')
     document.querySelector('.main-screen').classList.remove('show-screen')
@@ -388,6 +398,8 @@ function onSaveMeme() {
 function onSetAndEditSavedMeme(idx) {
     const savedMems = getSavedMemes()
     setCurrMemeToRender(savedMems[idx])
+    setCanvas()
+    setCanvasAspectRatio()
     renderMeme()
     showEditor()
     savedMems.splice(idx, 1)
@@ -414,6 +426,8 @@ function renderSavedMemes() {
 // UPLOAD IMAGE
 function onImgInput(ev) {
     loadImageFromInput(ev, renderImg)
+    debugger
+    renderMeme()
     onHideModals()
     showEditor()
 }
@@ -431,8 +445,11 @@ function loadImageFromInput(ev, onImageReady) {
         // Can also do it this way:
         img.onload = () => {
             const aspectRatio = img.height / img.width
+            gElCanvas.height = gElCanvas.width
             gElCanvas.height *= aspectRatio
             onImageReady(img)
+            gUploadSrc = img.src
+            setMemeImg(-1, gUploadSrc)
         }
     }
     reader.readAsDataURL(ev.target.files[0]) // Read the file we picked
