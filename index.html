@@ -51,7 +51,7 @@
         <div class="controls-box flex align-center justify-center column ">
             <div class="line-controls flex justify-between w-100">
                 <input type="text" title="Type text" class="text-editor flex justify-between w-100" value=""
-                    placeholder="Write Something Funny" oninput="renderMeme(null, this.value, false)" />
+                    placeholder="Write Something Funny" oninput="onSetMemeTxt(this.value)" />
             </div>
             <div class="line-controls flex justify-around">
                 <button class="line-add" title="Add new element" onclick="onAddLine()"><span
@@ -93,20 +93,20 @@
             <div>
             </div>
             <div class="stickers flex wrap justify-center w-100 ">
-                <span class="openEmojie" onclick="renderMeme(null, '😀', true)">😀</span>
-                <span class="openEmojie" onclick="renderMeme(null, '😍', true)">😍</span>
-                <span class="openEmojie" onclick="renderMeme(null, '😎', true)">😎</span>
-                <span class="openEmojie" onclick="renderMeme(null, '😈', true)">😈</span>
-                <span class="openEmojie" onclick="renderMeme(null, '👻', true)">👻</span>
-                <span class="openEmojie" onclick="renderMeme(null, '👍', true)">👍</span>
-                <span class="openEmojie" onclick="renderMeme(null, '💋', true)">💋</span>
-                <span class="openEmojie" onclick="renderMeme(null, '👀', true)">👀</span>
-                <span class="openEmojie" onclick="renderMeme(null, '🐬', true)">🐬</span>
-                <span class="openEmojie" onclick="renderMeme(null, '⭐️', true)">⭐️</span>
-                <span class="openEmojie" onclick="renderMeme(null, '💥', true)">💥</span>
-                <span class="openEmojie" onclick="renderMeme(null, '🍆', true)">🍆</span>
-                <span class="openEmojie" onclick="renderMeme(null, '🍑', true)">🍑</span>
-                <span class="openEmojie" onclick="renderMeme(null, '🍒', true)">🍒</span>
+                <span class="openEmojie" onclick="onDrawSticker('😀')">😀</span>
+                <span class="openEmojie" onclick="onDrawSticker('😍')">😍</span>
+                <span class="openEmojie" onclick="onDrawSticker('😎')">😎</span>
+                <span class="openEmojie" onclick="onDrawSticker('😈')">😈</span>
+                <span class="openEmojie" onclick="onDrawSticker('👻')">👻</span>
+                <span class="openEmojie" onclick="onDrawSticker('👍')">👍</span>
+                <span class="openEmojie" onclick="onDrawSticker('💋')">💋</span>
+                <span class="openEmojie" onclick="onDrawSticker('👀')">👀</span>
+                <span class="openEmojie" onclick="onDrawSticker('🐬')">🐬</span>
+                <span class="openEmojie" onclick="onDrawSticker('⭐️')">⭐️</span>
+                <span class="openEmojie" onclick="onDrawSticker('💥')">💥</span>
+                <span class="openEmojie" onclick="onDrawSticker('🍆')">🍆</span>
+                <span class="openEmojie" onclick="onDrawSticker('🍑')">🍑</span>
+                <span class="openEmojie" onclick="onDrawSticker('🍒')">🍒</span>
             </div>
             <div class="line-controls flex justify-center w-100">
                 <a href="#" class="btn download" onclick="downloadImg(this)" download="my-img.jpg">download</a>

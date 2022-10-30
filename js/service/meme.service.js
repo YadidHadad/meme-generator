@@ -3,27 +3,27 @@
 const MEMES_STORAGE_KEY = 'memesDB'
 const KEYWORDS_STORAGE_KEY = 'keywordsDB'
 
-var gKeywordSearchCountMap = { 'funny': 8, 'cat': 16, 'baby': 10, 'happy': 1, 'crazy': 45, 'sarcastic': 16, 'sad': 1, 'animal': 4 }
+var gKeywordSearchCountMap = { 'funny': 8, 'cat': 16, 'baby': 10, 'happy': 1, 'crazy': 45, 'sarcastic': 16, 'animal': 4 }
 
 var gImgs = [
     { id: 1, url: './img/meme-imgs/1.jpg', keywords: ['funny', 'politics'] },
     { id: 2, url: './img/meme-imgs/2.jpg', keywords: ['happy', 'cute', 'musical'] },
-    { id: 3, url: './img/meme-imgs/3.jpg', keywords: ['dog', 'puppy', 'cute', 'baby', 'animal'] },
-    { id: 4, url: './img/meme-imgs/4.jpg', keywords: ['dog', 'cute', 'animal'] },
-    { id: 5, url: './img/meme-imgs/5.jpg', keywords: ['baby', 'sarcastic'], },
-    { id: 6, url: './img/meme-imgs/6.jpg', keywords: ['arcastic', 'funny'], },
-    { id: 7, url: './img/meme-imgs/7.jpg', keywords: ['baby', 'cute', 'shock'], },
-    { id: 8, url: './img/meme-imgs/8.jpg', keywords: ['sarcastic', 'funny'], },
+    { id: 3, url: './img/meme-imgs/3.jpg', keywords: ['funny', 'politics'] },
+    { id: 4, url: './img/meme-imgs/4.jpg', keywords: ['dog', 'puppy', 'cute', 'animal'] },
+    { id: 5, url: './img/meme-imgs/5.jpg', keywords: ['baby', 'sarcastic'] },
+    { id: 6, url: './img/meme-imgs/6.jpg', keywords: ['arcastic', 'funny'] },
+    { id: 7, url: './img/meme-imgs/7.jpg', keywords: ['cat', 'cute', 'animal'] },
+    { id: 8, url: './img/meme-imgs/8.jpg', keywords: ['sarcastic', 'funny'] },
     { id: 9, url: './img/meme-imgs/9.jpg', keywords: ['sarcastic', 'baby', 'cute', 'funny'], },
-    { id: 10, url: './img/meme-imgs/10.jpg', keywords: ['funny', 'politics'], },
-    { id: 11, url: './img/meme-imgs/11.jpg', keywords: ['gay', 'sarcastic', 'love', 'funny'], },
-    { id: 12, url: './img/meme-imgs/12.jpg', keywords: ['sarcastic', 'funny'], },
-    { id: 13, url: './img/meme-imgs/13.jpg', keywords: ['happy', 'toast', 'drink', 'sarcastic'], },
-    { id: 14, url: './img/meme-imgs/14.jpg', keywords: ['sarcastic', 'crazy'], },
-    { id: 15, url: './img/meme-imgs/15.jpg', keywords: ['funny', 'sarcastic'], },
-    { id: 16, url: './img/meme-imgs/16.jpg', keywords: ['funny', 'sarcastic'], },
-    { id: 17, url: './img/meme-imgs/17.jpg', keywords: ['funny', 'sarcastic'], },
-    { id: 18, url: './img/meme-imgs/18.jpg', keywords: ['funny', 'toys', 'cute'], },
+    { id: 10, url: './img/meme-imgs/10.jpg', keywords: ['funny', 'politics'] },
+    { id: 11, url: './img/meme-imgs/11.jpg', keywords: ['sarcastic', 'funny'] },
+    { id: 12, url: './img/meme-imgs/12.jpg', keywords: ['sarcastic', 'funny'] },
+    { id: 13, url: './img/meme-imgs/13.jpg', keywords: ['happy', 'funny', 'baby'] },
+    { id: 14, url: './img/meme-imgs/14.jpg', keywords: ['sarcastic', 'crazy'] },
+    { id: 15, url: './img/meme-imgs/15.jpg', keywords: ['funny', 'baby'] },
+    { id: 16, url: './img/meme-imgs/16.jpg', keywords: ['funny', 'dog'] },
+    { id: 17, url: './img/meme-imgs/17.jpg', keywords: ['funny', 'politics'] },
+    { id: 18, url: './img/meme-imgs/18.jpg', keywords: ['funny', 'toys', 'cute'] },
 
 ]
 var gMeme
@@ -32,7 +32,6 @@ var gMemes
 
 // STORAGE CHECK
 function loadSaves() {
-    // debugger
     if (!loadMemesfromStorage()) gMemes = []
     else gMemes = loadMemesfromStorage()
 
@@ -67,7 +66,7 @@ function createMeme() {
         id: 'jhsdh',
         selectedImgId: 5,
         imgAspectRatio: 1,
-        selectedLineIdx: 0,
+        selectedLineIdx: -1,
         lines: [
             {
                 txt: 'Write Something Funny',
@@ -109,10 +108,6 @@ function setMemeImg(idx, url) {
 
     gMeme.selectedImgId = idx
     gMeme.imgAspectRatio = aspectRatio
-}
-
-function setMemeText(lineIdx, txt) {
-    gMeme.lines[lineIdx].txt = txt
 }
 
 function updateSearchCount(keyword) {
@@ -163,7 +158,7 @@ function createLine(x, y) {
         isDrag: false,
     }
     gMeme.lines.push(newLine)
-    gMeme.selectedLineIdx += 1
+    gMeme.selectedLineIdx = gMeme.lines.length - 1
 }
 
 function deleteLine() {
@@ -201,6 +196,7 @@ function setSelectedLine(lineIdx) {
 }
 
 function setLineDrag(isDrag) {
+    if (gMeme.selectedLineIdx < 0) return
     gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag
 }
 
@@ -212,14 +208,19 @@ function setYPos(value) {
     gMeme.lines[gMeme.selectedLineIdx].pos.y += value
 }
 
+function setMemeText(value) {
+    if (gMeme.selectedLineIdx < 0) gMeme.selectedLineIdx = 0
+    gMeme.lines[gMeme.selectedLineIdx].txt = value
+}
+
 // SAVE
 function saveMeme() {
     gMemes.unshift(gMeme)
     saveMemesToStorage()
-    gMemes = loadMemesfromStorage()
 }
 
 function getSavedMemes() {
+    gMemes = loadMemesfromStorage()
     return gMemes
 }
 
