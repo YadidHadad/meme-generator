@@ -46,15 +46,3 @@ function doUploadImg(imgDataUrl, onSuccess) {
   XHR.open('POST', '//ca-upload.com/here/upload.php')
   XHR.send(formData)
 }
-
-function showShareModal() {
-  console.log('share')
-  document.querySelector('[name="modal-share"]').classList.remove('hide')
-  document.querySelector('.main-screen').classList.add('show-screen')
-}
-
-function hideShareModal() {
-  console.log('hide share')
-  document.querySelector('[name="modal-share"]').classList.add('hide')
-  document.querySelector('.main-screen').classList.remove('show-screen')
-}

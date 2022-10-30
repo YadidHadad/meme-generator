@@ -73,6 +73,10 @@
     content: "\f037";
 }
 
+.fa-solid.img::before {
+    content: "\f03e";
+}
+
 /* BASICS */
 body {
     background-color: var(--light);
@@ -161,6 +165,7 @@ input[type="color"] {
 .text-editor::placeholder {
     font-family: gImpact;
     color: var(--secondary);
+    opacity: 0.5;
 }
 
 h1,
@@ -332,9 +337,12 @@ canvas {
 
 .controls-box button:hover,
 .controls-box a:hover {
-    /* background-color: var(--primary); */
     color: var(--secondary);
     box-shadow: 0px 6px var(--secondary);
+}
+
+.controls-box a:hover {
+    background-color: var(--primary);
 }
 
 .btn.download {
@@ -382,6 +390,7 @@ canvas {
 
 /* MODALS */
 .share,
+[name="modal-upload"],
 [name="modal-alert"] {
     background-color: var(--secondary);
     border-bottom: 1px solid var(--clr2);
@@ -398,12 +407,18 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 50;
+    margin: 0;
 }
 
 .btn {
     text-decoration: none;
     color: var(--light);
     font-size: 3rem;
+}
+
+.file-input {
+    font-size: 1rem !important;
+    height: 100%;
 }
 
 /* GALLERY */
@@ -414,11 +429,6 @@ canvas {
 .search {
     border-block-end: 1px solid var(--secondary);
     background-color: var(--secondary);
-}
-
-.search span {
-    color: var(--primary);
-    font-size: 1.5rem;
 }
 
 .search input {
@@ -435,12 +445,17 @@ canvas {
     color: var(--primary);
     font-size: 1.5rem;
     text-align: start;
+    opacity: 0.5;
 }
 
-.search span {
+.search button,
+.search label {
     border: none;
     background-color: transparent;
     margin-inline: 1rem;
+    color: var(--primary);
+    font-size: 1.5rem;
+
 }
 
 .common-search-values div {
@@ -453,7 +468,9 @@ canvas {
 
 .common-search-values div:hover {
     cursor: pointer;
-    scale: 1.5;
+    /* scale: 1.5; */
+    background-color: var(--secondary);
+    color: var(--primary);
 }
 
 .grid-saved-container,
@@ -464,6 +481,7 @@ canvas {
     grid-gap: 0.5rem;
 }
 
+.saved-meme-img,
 .grid-item {
     width: 100%;
     text-align: center;
@@ -477,6 +495,11 @@ img {
     object-fit: cover;
 }
 
+.saved-meme-img {
+    object-fit: scale-down;
+}
+
+.saved-meme-img:hover,
 .grid-item:hover {
     cursor: pointer;
     opacity: 1;
@@ -521,6 +544,10 @@ img {
     }
 
     .gallery-inputs.row {
+        flex-direction: column;
+    }
+
+    [name="modal-upload"] {
         flex-direction: column;
     }
 }

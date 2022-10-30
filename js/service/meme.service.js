@@ -1,12 +1,15 @@
 'use strict'
 
+const MEMES_STORAGE_KEY = 'memesDB'
+const KEYWORDS_STORAGE_KEY = 'keywordsDB'
+
 var gKeywordSearchCountMap = { 'funny': 8, 'cat': 16, 'baby': 10, 'happy': 1, 'crazy': 45, 'sarcastic': 16, 'sad': 1, 'animal': 4 }
 
 var gImgs = [
     { id: 1, url: './img/meme-imgs/1.jpg', keywords: ['funny', 'politics'] },
-    { id: 2, url: './img/meme-imgs/2.jpg', keywords: ['dog', 'puppy', 'cute', 'animal'] },
+    { id: 2, url: './img/meme-imgs/2.jpg', keywords: ['happy', 'cute', 'musical'] },
     { id: 3, url: './img/meme-imgs/3.jpg', keywords: ['dog', 'puppy', 'cute', 'baby', 'animal'] },
-    { id: 4, url: './img/meme-imgs/4.jpg', keywords: ['kitten', 'cat', 'cute', 'animal'] },
+    { id: 4, url: './img/meme-imgs/4.jpg', keywords: ['dog', 'cute', 'animal'] },
     { id: 5, url: './img/meme-imgs/5.jpg', keywords: ['baby', 'sarcastic'], },
     { id: 6, url: './img/meme-imgs/6.jpg', keywords: ['arcastic', 'funny'], },
     { id: 7, url: './img/meme-imgs/7.jpg', keywords: ['baby', 'cute', 'shock'], },
@@ -23,7 +26,6 @@ var gImgs = [
     { id: 18, url: './img/meme-imgs/18.jpg', keywords: ['funny', 'toys', 'cute'], },
 
 ]
-
 var gMeme = {
     id: 'jhsdh',
     selectedImgId: 5,
@@ -43,74 +45,12 @@ var gMeme = {
     ]
 }
 
-var gMemes = [
-    {
-        "id": "vhvcB",
-        "selectedImgId": 9,
-        "imgAspectRatio": 0.6607717041800643,
-        "selectedLineIdx": 0,
-        "lines": [
-            {
-                "txt": "Ha HA Ha!",
-                "size": 35,
-                "length": 133.1298828125,
-                "align": "center",
-                "color": "white",
-                "family": "gImpact",
-                "pos": {
-                    "x": 198,
-                    "y": 41
-                },
-                "isDrag": false
-            },
-            {
-                "txt": "😍",
-                "size": 55,
-                "length": 75.517578125,
-                "align": "center",
-                "color": "white",
-                "family": "gImpact",
-                "pos": {
-                    "x": 344,
-                    "y": 200
-                },
-                "isDrag": false
-            },
-            {
-                "txt": "🐬",
-                "size": 85,
-                "length": 116.708984375,
-                "align": "center",
-                "color": "white",
-                "family": "gImpact",
-                "pos": {
-                    "x": 330,
-                    "y": 113
-                },
-                "isDrag": false
-            },
-            {
-                "txt": "👻",
-                "size": 55,
-                "length": 75.517578125,
-                "align": "center",
-                "color": "white",
-                "family": "gImpact",
-                "pos": {
-                    "x": 53,
-                    "y": 198
-                },
-                "isDrag": false
-            }
-        ]
-    }
+var gMemes
 
-]
-
-// CACHE CHECK
+// STORAGE CHECK
 function loadSaves() {
-
-    if (!loadMemesfromStorage()) saveMemesToStorage()
+    // debugger
+    if (!loadMemesfromStorage()) gMemes = []
     else gMemes = loadMemesfromStorage()
 
     if (!loadKeywordsfromStorage()) saveKeywordsToStorage()
@@ -120,6 +60,7 @@ function loadSaves() {
 
 // STORAGE
 function saveMemesToStorage() {
+    if (!gMeme) return
     saveToStorage(MEMES_STORAGE_KEY, gMemes)
 }
 
@@ -128,6 +69,7 @@ function loadMemesfromStorage() {
 }
 
 function saveKeywordsToStorage() {
+    if (!gMemes) return
     saveToStorage(KEYWORDS_STORAGE_KEY, gKeywordSearchCountMap)
 }
 
@@ -165,23 +107,24 @@ function setMemeImg(idx, url) {
 
     gMeme.selectedImgId = idx
     gMeme.imgAspectRatio = aspectRatio
-    const img = getImg(idx)
-    updateSearchCount(img.keywords)
+
 }
 
-function setMemeText(lineIdx, text) {
-    // console.log(lineIdx, text)
-    gMeme.lines[lineIdx].txt = text
+function setMemeText(lineIdx, txt) {
+    gMeme.lines[lineIdx].txt = txt
 }
 
-function updateSearchCount(keywords) {
-    keywords.map((keyword) => {
-        if (gKeywordSearchCountMap.hasOwnProperty(keyword)) {
-            gKeywordSearchCountMap[keyword] += 1
-        } else {
-            gKeywordSearchCountMap[keyword] = 1
-        }
-    })
+function updateSearchCount(keyword) {
+
+    if (gKeywordSearchCountMap.hasOwnProperty(keyword)) {
+        gKeywordSearchCountMap[keyword] += 1
+    } else {
+        gKeywordSearchCountMap[keyword] = 1
+    }
+
+    saveKeywordsToStorage()
+    gKeywordSearchCountMap = loadKeywordsfromStorage()
+
 }
 
 function getKeywords() {
@@ -243,8 +186,11 @@ function setSize(value) {
     gMeme.lines[gMeme.selectedLineIdx].size += value
 }
 
-function setAlign(value) {
-    gMeme.lines[gMeme.selectedLineIdx].align = value
+function setAlign(value, canvasWidth) {
+
+    if (value === 'right') gMeme.lines[gMeme.selectedLineIdx].pos.x = 20 + gMeme.lines[gMeme.selectedLineIdx].length / 2
+    if (value === 'left') gMeme.lines[gMeme.selectedLineIdx].pos.x = canvasWidth - 20 - gMeme.lines[gMeme.selectedLineIdx].length / 2
+    if (value === 'center') gMeme.lines[gMeme.selectedLineIdx].pos.x = canvasWidth / 2
 }
 
 function toggleSelectedLine() {
@@ -269,40 +215,16 @@ function setYPos(value) {
 }
 
 // SAVE
-function saveMemeToCache() {
+function saveMeme() {
     gMemes.unshift(gMeme)
     saveMemesToStorage()
     gMemes = loadMemesfromStorage()
-
 }
 
 function getSavedMemes() {
     return gMemes
-
 }
 
-function setCurrMemeToRender(meme = null) {
+function setCurrMemeToRender(meme) {
     gMeme = meme
-
-    const memeId = makeid(5)
-    if (meme === null) {
-        gMeme = {
-            id: memeId,
-            selectedImgId: 1,
-            imgAspectRatio: 1.00,
-            selectedLineIdx: 0,
-            lines: [
-                {
-                    txt: 'Write Something Funny',
-                    size: 35,
-                    length: 0,
-                    align: 'center',
-                    color: 'white',
-                    family: 'gImpact',
-                    pos: { x: 200, y: 50 },
-                    isDrag: false,
-                },
-            ]
-        }
-    }
 }

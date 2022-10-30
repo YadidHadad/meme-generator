@@ -1,8 +1,5 @@
 'use strict'
 
-const MEMES_STORAGE_KEY = 'memesDB'
-const KEYWORDS_STORAGE_KEY = 'keywordsDB'
-
 function saveToStorage(key, val) {
     const str = JSON.stringify(val)
     localStorage.setItem(key, str)

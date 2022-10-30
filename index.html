@@ -11,35 +11,28 @@
 </head>
 
 <body onload="onInit()">
-    <div class="main-screen full" id="screen" onclick="hideShareModal()"></div>
+    <div class="main-screen full" id="screen" onclick="onHideModals()"></div>
     <!-- HEADER -->
     <header class="header full flex justify-between align-center justify-center">
         <nav class="nav flex justify-center align-center">
             <h1 class="logo">FunnyMeme</h1>
             <div>
-                <button class="gallery" onclick="onShowGallery()">gallery</button>
-                <button class="memes" onclick=" onShowSavedMemes()">memes</button>
-                <!-- <button class="about" onclick="onAlertUser('sorry! unavailable')">about</button> -->
+                <button class="gallery" title="Images gallery" onclick="onShowGallery()">images</button>
+                <button class="memes" title="Saved memes" onclick="onShowSavedMemes()">memes</button>
             </div>
         </nav>
     </header>
+
     <!-- IMAGE-GALLERY -->
     <section name="image-gallery">
         <div class="gallery-inputs flex row justify-between align-center">
             <div class="search flex row justify-center align-center">
-                <input type="text" placeholder="What's up?" value="" oninput="renderGallery(this.value)" />
-                <span class="fa-solid m-glass"></span>
-
+                <input id="search" type="text" class="search-input" placeholder="What's up?" value=""
+                    oninput="renderGallery(this.value)" />
+                <label class="fa-solid m-glass" for="search"></label>
+                <button class="fa-solid img" title="upload image" onclick="onShowUploadModal(event)"></button>
             </div>
-
             <div class="common-search-values flex wrap  justify-around align-center">
-                <div class="search-keyword">funny</div>
-                <div class="search-keyword">cat</div>
-                <div class="search-keyword">baby</div>
-                <div class="search-keyword">happy</div>
-                <div class="search-keyword">crazy</div>
-                <div class="search-keyword">sarcastic</div>
-                <div class="search-keyword">sad</div>
             </div>
         </div>
         <div class="grid-images-container">
@@ -50,50 +43,51 @@
     <!-- MEME-EDITOR -->
     <section name="meme-editor" class="flex wrap justify-around align-center hide">
         <!-- CANVAS -->
-        <div class="canvas-container">
+        <div class="canvas-container flex align-center">
             <canvas id="canvas" width="400" height="400">
         </div>
 
         <!-- CONTROLS BOX -->
         <div class="controls-box flex align-center justify-center column ">
             <div class="line-controls flex justify-between w-100">
-
-                <input type="text" class="text-editor flex justify-between w-100" value=""
+                <input type="text" title="Type text" class="text-editor flex justify-between w-100" value=""
                     placeholder="Write Something Funny" oninput="renderMeme(null, this.value, false)" />
             </div>
             <div class="line-controls flex justify-around">
-                <button class="line-add" onclick="onAddLine()"><span class="fa-solid new"></span></button>
-                <button class="line-toggle" onclick="onToggleSelectedLine()"><span
+                <button class="line-add" title="Add new element" onclick="onAddLine()"><span
+                        class="fa-solid new"></span></button>
+                <button class="line-toggle" title="Toggle selected element" onclick="onToggleSelectedLine()"><span
                         class="fa-solid double-arrows"></span></button>
-                <button class="line-delete" onclick="onDeleteLine()"><span class="fa-solid trash"></span></button>
+                <button class="line-delete" title="Delete element" onclick="onDeleteLine()"><span
+                        class="fa-solid trash"></span></button>
             </div>
             <div class="text-controls  flex justify-between  w-100">
-                <select id="font-family" onchange="onSetLine('family',this.value)">
+                <select id="font-family" title="Select font family" onchange="onSetLine('family',this.value)">
                     <option value="gImpact">Impact</option>
                     <option value="gBowlbyOne">BowlbyOne</option>
                     <option value="gBungee">Bungee</option>
                     <option value="gIFrdokaOne">IFrdokaOne</option>
                     <option value="gRighteous">Righteous</option>
                 </select>
-                <button class="color-picker">
+                <button class="color-picker" title="Color picker">
                     <input type="color" value="#FFFFFF" oninput=" onSetLine('color',this.value)" />
                 </button>
 
-                <button class="font-bigger" onclick="onSetLine('size', 3)">A<span class="fa-solid plus"></span></button>
-                <button class="font-smaller" onclick="onSetLine('size', -3)">A<span
+                <button class="font-bigger" title="Larger font" onclick="onSetLine('size', 3)">A<span
+                        class="fa-solid plus"></span></button>
+                <button class="font-smaller" title="Smaller font" onclick="onSetLine('size', -3)">A<span
                         class="fa-solid minus"></span></button>
-
             </div>
             <div class="position-controls flex justify-between  w-100">
-                <button class="align-left" onclick="onSetLine('align', 'right')"><span
+                <button class="align-left" title="Align left" onclick="onSetLine('align', 'right')"><span
                         class="fa-solid align-right"></span></button>
-                <button class="align-center" onclick="onSetLine('align', 'center')"><span
+                <button class="align-center" title="Align center" onclick="onSetLine('align', 'center')"><span
                         class="fa-solid align-center"></span></button>
-                <button class="align-right" onclick="onSetLine('align', 'left')"><span
+                <button class="align-right" title="Align right" onclick="onSetLine('align', 'left')"><span
                         class="fa-solid align-left"></span></button>
-                <button class="position-up" onclick="onSetLine('moveDown')"><span
+                <button class="position-up" title="Move down" onclick="onSetLine('moveDown')"><span
                         class="fa-solid arrow-down"></span></button>
-                <button class="position-down" onclick="onSetLine('moveUp')"><span
+                <button class="position-down" title="Move up" onclick="onSetLine('moveUp')"><span
                         class="fa-solid arrow-up"></span></button>
             </div>
             <div>
@@ -120,16 +114,15 @@
             </div>
             <div class="line-controls flex justify-center w-100">
                 <!-- <a href="#" class="btn download" onclick="downloadImg(this)" download="my-img.jpg">download</a> -->
-                <a href="#" class="btn download" onclick="onSaveToCache()">save</a>
+                <a href="#" class="btn download" onclick="onSaveMeme()">save to gallery</a>
             </div>
-
         </div>
-
     </section>
 
     <!-- SAVED MEMES -->
     <section name="memes-saved" class=" hide">
         <div class="saved-container flex justify-center wrap">
+            <h2>Empty, fill me up with your creations!</h2>
             <!-- MEMES GALLERY -->
         </div>
     </section>
@@ -142,12 +135,17 @@
 
     </section>
 
+    <section name="modal-upload" class=" hide flex row align-center justify-center">
+        <input type="file" class="file-input " name="image" onchange="onImgInput(event)">
+        <span class="fa-solid img"></span>
+    </section>
+
     <footer class="full flex column align-center justify-center">
         <span>all rights reserved 2022</span>
         <span>deveoped by Yadid Hadad</span>
     </footer>
 
-    <script src="./js/service/font.service.js"></script>
+    <script src="./js/service/fonts.service.js"></script>
     <script src="./js/service/upload.service.js"></script>
     <script src="./js/service/utils.service.js"></script>
     <script src="./js/service/storage.service.js"></script>

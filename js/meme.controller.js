@@ -2,12 +2,13 @@
 
 let gElCanvas = {}
 let gCtx
+let gStartPos
+
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 
 function onInit() {
-    setFonts()
     loadSaves()
-    setCanvas('#canvas')
+    setCanvas()
     renderGallery()
     renderKeywords()
     addListeners()
@@ -44,9 +45,11 @@ function onDown(ev) {
     setMemeTextInput()
     setLineDrag(true)
 
+    //Save the pos we start from 
+    gStartPos = pos
+
     drawFrame()
     gElCanvas.style.cursor = 'grabbing'
-    // document.canvas.style.cursor = 'grabbing'
 }
 
 function onMove(ev) {
@@ -56,10 +59,14 @@ function onMove(ev) {
 
     const currPos = lines[selectedLineIdx].pos
     const newPos = getEvPos(ev)
-    const dx = newPos.x - currPos.x
-    const dy = newPos.y - currPos.y
 
+    const dx = newPos.x - gStartPos.x
+    const dy = newPos.y - gStartPos.y
     moveLine(dx, dy)
+
+    //Save the last pos , we remember where we`ve been and move accordingly
+    gStartPos = newPos
+
     renderMeme()
 }
 
@@ -109,6 +116,12 @@ function lineClicked(clickedPos) {
 
 // GALLERY
 function renderGallery(searchFilter) {
+    // debugger
+    if (searchFilter) {
+        setGalleryTextInput(searchFilter)
+        updateSearchCount(searchFilter)
+    }
+
     const imgsGallery = document.querySelector('.grid-images-container')
     const imgs = getImages(searchFilter)
     const strHTML = imgs.map((img) => {
@@ -117,7 +130,6 @@ function renderGallery(searchFilter) {
     })
 
     imgsGallery.innerHTML = strHTML.join('')
-    if (searchFilter) setGalleryTextInput(searchFilter)
 }
 
 function renderKeywords() {
@@ -135,17 +147,15 @@ function renderKeywords() {
 }
 
 function setGalleryTextInput(searchFilter) {
-    const element = document.querySelector('.search')
+    const element = document.querySelector('.search-input')
     element.value = searchFilter
 }
 
 // CANVAS
 
-function setCanvas(canvasId) {
+function setCanvas() {
     // debugger
-    if (canvasId === '#canvas') gElCanvas = resizeCanvas()
-
-    gElCanvas = document.querySelector(canvasId)
+    gElCanvas = document.querySelector('#canvas')
     gCtx = gElCanvas.getContext('2d')
 
     const { imgAspectRatio } = getMeme()
@@ -173,7 +183,7 @@ function renderMeme(idx, text, isSticker = false) {
 
     // render Image
     const elImg = document.getElementById(selectedImgId)
-    if (elImg) gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
+    if (elImg) renderImg(elImg)
     else return
 
     // render text lines
@@ -190,11 +200,8 @@ function renderMeme(idx, text, isSticker = false) {
 }
 
 function onSetMemeImg(idx, url) {
-
-    setCurrMemeToRender()
     setMemeImg(idx, url)
-    toggleHide('meme-editor')
-    toggleHide('image-gallery')
+    showEditor()
 }
 
 function resetMemeTextInput() {
@@ -261,10 +268,11 @@ function onMemeLine(text) {
     drawText(text, line, x, y)
 }
 
-function downloadImg(elLink) {
-    const imgContent = gElCanvas.toDataURL('image/jpeg')// image/jpeg the default format
-    elLink.href = imgContent
+function renderImg(img) {
+    // Draw the img on the canvas
+    gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
 }
+
 
 function resizeCanvas() {
     const elContainer = document.querySelector('.canvas-container')
@@ -295,41 +303,40 @@ function onToggleSelectedLine() {
     drawFrame()
 }
 
-function onSetLine(style, value) {
+function onSetLine(property, value) {
     // debugger
     const { selectedImgId, selectedLineIdx, lines } = getMeme()
     if (selectedLineIdx < 0) return
-    if (style === 'family') {
+    if (property === 'family') {
         setFamily(value)
         document.querySelector('.text-editor').style.fontFamily = value
     }
-    else if (style === 'color') {
+    else if (property === 'color') {
         setColor(value)
         document.querySelector('.color-picker').style.backgroundColor = value
     }
-    else if (style === 'size') { setSize(+value) }
-    else if (style === 'align') { setAlign(value) }
-    else if (style === 'moveUp') { setYPos(-10) }
-    else if (style === 'moveDown') { setYPos(10) }
+    else if (property === 'size') { setSize(+value) }
+    else if (property === 'align') { setAlign(value, gElCanvas.width) }
+    else if (property === 'moveUp') { setYPos(-10) }
+    else if (property === 'moveDown') { setYPos(10) }
 
     renderMeme()
 }
 
-// SHOW HIDE ELEMENTS
-function toggleHide(elementName) {
-    document.querySelector(`[name="${elementName}"]`).classList.toggle('hide')
-}
+// SHOW HIDE COMPONENETS
 function onShowGallery() {
     document.querySelector('[name="image-gallery"]').classList.remove('hide')
     document.querySelector('[name="meme-editor"]').classList.add('hide')
     document.querySelector('[name="memes-saved"]').classList.add('hide')
 }
+
 function showEditor() {
     document.querySelector('[name="image-gallery"]').classList.add('hide')
     document.querySelector('[name="meme-editor"]').classList.remove('hide')
     document.querySelector('[name="memes-saved"]').classList.add('hide')
 
 }
+
 function onShowSavedMemes() {
     document.querySelector('[name="image-gallery"]').classList.add('hide')
     document.querySelector('[name="meme-editor"]').classList.add('hide')
@@ -337,58 +344,102 @@ function onShowSavedMemes() {
     renderSavedMemes()
 }
 
-function onAlertUser(value) {
+function alertUser(value) {
     const el = document.querySelector('[name="modal-alert"]')
     el.innerHTML = value
     el.classList.remove('hide')
+    document.querySelector('.main-screen').classList.add('show-screen')
 
     setTimeout(() => {
         document.querySelector('[name="modal-alert"]').classList.add('hide')
+        document.querySelector('.main-screen').classList.remove('show-screen')
 
     }, 2500)
 
 }
 
+function showShareModal() {
+    document.querySelector('[name="modal-share"]').classList.remove('hide')
+    document.querySelector('.main-screen').classList.add('show-screen')
+}
 
+function onHideModals() {
+    document.querySelector('[name="modal-share"]').classList.add('hide')
+    document.querySelector('[name="modal-upload"]').classList.add('hide')
+    document.querySelector('.main-screen').classList.remove('show-screen')
+}
+
+function onShowUploadModal(ev) {
+    document.querySelector('[name="modal-upload"]').classList.remove('hide')
+    document.querySelector('.main-screen').classList.add('show-screen')
+
+}
 
 // SAVED MEMES
-function onSaveToCache() {
-    console.log('save')
-    saveMemeToCache()
+function onSaveMeme() {
+    var dataURL = gElCanvas.toDataURL()
+    var meme = getMeme()
+    meme['dataURL'] = dataURL
 
+    saveMeme()
+    alertUser('Meme saved!')
+}
+
+function onSetAndEditSavedMeme(idx) {
+    const savedMems = getSavedMemes()
+    setCurrMemeToRender(savedMems[idx])
+    renderMeme()
+    showEditor()
+    savedMems.splice(idx, 1)
 }
 
 function renderSavedMemes() {
     // debugger
-    const savedMemesGallery = document.querySelector('.saved-container')
-    const savedMemes = getSavedMemes()
+    var savedMemes = loadMemesfromStorage()
+    if (!savedMemes) {
+        document.querySelector('.saved-container').innerHTML = '<h2>fill me up with your creations!</h2>'
+        return
+    }
 
-    // RENDER CANVASES
-    const savedCanvasHtml = savedMemes.map((savedMeme) => `<canvas id=${savedMeme.id} width="${+savedMeme.imgAspectRatio * 400}" height="400" onclick="onEditMeme(this.id)"></canvas>`
+    document.querySelector('.saved-container').classList.add('grid-saved-container')
+
+    var strHTMLs = savedMemes.map((meme, idx) => `
+    <img class="saved-meme-img" src="${meme.dataURL}" onclick="onSetAndEditSavedMeme(${idx})">`
     )
-    savedMemesGallery.innerHTML = savedCanvasHtml.join('')
 
-    // RENDER MEMES ON CANVASES
-    savedMemes.map((savedMeme) => {
-        setCanvas(`#${savedMeme.id}`)
-        setCurrMemeToRender(savedMeme)
-        console.log(`gMeme:`, gMeme)
-        renderMeme()
-    })
-    gElCanvas = {}
-    setCanvas('#canvas')
+    console.log(strHTMLs)
+    document.querySelector('.saved-container').innerHTML = strHTMLs.join('')
 }
 
-function onEditMeme(id) {
-    // debugger
-    console.log('show editor')
-
-    const savedMemes = getSavedMemes()
-    console.log(getSavedMemes())
-
-    const meme = savedMemes.find(meme => meme.id === id)
-    setCurrMemeToRender(meme)
-    setCanvas('#canvas')
-    renderMeme()
+// UPLOAD IMAGE
+function onImgInput(ev) {
+    loadImageFromInput(ev, renderImg)
+    onHideModals()
     showEditor()
+}
+
+// CallBack func will run on success load of the img
+function loadImageFromInput(ev, onImageReady) {
+    const reader = new FileReader()
+    // After we read the file
+    reader.onload = function (event) {
+        let img = new Image() // Create a new html img element
+        img.src = event.target.result // Set the img src to the img file we read
+        // Run the callBack func, To render the img on the canvas
+        // console.log(img.onload.height)
+        // img.onload = onImageReady.bind(null, img)
+        // Can also do it this way:
+        img.onload = () => {
+            const aspectRatio = img.height / img.width
+            gElCanvas.height *= aspectRatio
+            onImageReady(img)
+        }
+    }
+    reader.readAsDataURL(ev.target.files[0]) // Read the file we picked
+}
+
+//DOWNLOAD
+function downloadImg(elLink) {
+    const imgContent = gElCanvas.toDataURL('image/jpeg')// image/jpeg the default format
+    elLink.href = imgContent
 }

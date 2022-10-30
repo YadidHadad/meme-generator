@@ -11,8 +11,8 @@ function makeid(length) {
 }
 
 function getAspectRatio(src) {
+    // debugger
     var img = new Image()
-
     img.src = src
     return (img.height / img.width)
 }
