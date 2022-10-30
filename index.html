@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Document</title>
+    <title>FunnyMeme</title>
 </head>
 
 <body onload="onInit()">
@@ -76,7 +76,7 @@
                     <option value="gRighteous">Righteous</option>
                 </select>
                 <button class="color-picker">
-                    <input type="color" value="#FFFFFF" id="colorWell" oninput=" onSetLine('color',this.value)" />
+                    <input type="color" value="#FFFFFF" oninput=" onSetLine('color',this.value)" />
                 </button>
 
                 <button class="font-bigger" onclick="onSetLine('size', 3)">A<span class="fa-solid plus"></span></button>
@@ -147,11 +147,12 @@
         <span>deveoped by Yadid Hadad</span>
     </footer>
 
+    <script src="./js/service/font.service.js"></script>
     <script src="./js/service/upload.service.js"></script>
     <script src="./js/service/utils.service.js"></script>
     <script src="./js/service/storage.service.js"></script>
     <script src="./js/service/meme.service.js"></script>
-    <script src="./js/memeController.js"></script>
+    <script src="./js/meme.controller.js"></script>
 </body>
 
 </html>

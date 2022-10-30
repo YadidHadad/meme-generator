@@ -332,7 +332,7 @@ canvas {
 
 .controls-box button:hover,
 .controls-box a:hover {
-    background-color: var(--primary);
+    /* background-color: var(--primary); */
     color: var(--secondary);
     box-shadow: 0px 6px var(--secondary);
 }

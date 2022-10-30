@@ -1,31 +1,16 @@
 'use strict'
 
-var gImpact
-var gBowlbyOne
-var gBungee
-var gIFrdokaOne
-var gRighteous
-var gOleoScriptRegular
-var gOleoScriptBold
-var gFASolid
-
 let gElCanvas = {}
 let gCtx
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
-
 
 function onInit() {
     setFonts()
     loadSaves()
     setCanvas('#canvas')
-
-
     renderGallery()
     renderKeywords()
     addListeners()
-
-
-
 }
 
 // EVENT LISTENERES
@@ -111,7 +96,6 @@ function getEvPos(ev) {
 function lineClicked(clickedPos) {
     const { lines } = getMeme()
     const selectedLineIdx = lines.findIndex(line => {
-
         const currPos = line.pos
         const lineStart = currPos.x - (line.length / 2)
         const lineEnd = currPos.x + (line.length / 2)
@@ -144,7 +128,7 @@ function renderKeywords() {
         if (keywordsMap[keyword] > 10) fontSize = '2'
         else if (keywordsMap[keyword] > 5) fontSize = '1.5'
         else fontSize = '1'
-        return `<div class="search-keyword" value="${keyword}" style="font-size: ${fontSize}rem ;" onclick="renderGallery('${keyword}')">${keyword}</div>`
+        return `<div class="search-keyword" value="${keyword}" style="font-size: ${fontSize}rem ;" onclick="renderGallery('${keyword}'); renderKeywords()">${keyword}</div>`
     })
     document.querySelector('.common-search-values').innerHTML = strHTML.join('')
     saveKeywordsToStorage()
@@ -188,7 +172,7 @@ function renderMeme(idx, text, isSticker = false) {
     clearCanvas()
 
     // render Image
-    const elImg = document.getElementById(selectedImgId);
+    const elImg = document.getElementById(selectedImgId)
     if (elImg) gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
     else return
 
@@ -203,8 +187,6 @@ function renderMeme(idx, text, isSticker = false) {
         })
     }
     if (lines[selectedLineIdx].isDrag) drawFrame()
-
-
 }
 
 function onSetMemeImg(idx, url) {
@@ -231,7 +213,7 @@ function drawText(line, x, y) {
     gCtx.lineWidth = 2
     gCtx.strokeStyle = 'black'
     gCtx.fillStyle = line.color
-    gCtx.textAlign = line.align;
+    gCtx.textAlign = line.align
     gCtx.font = `${line.size}px ${line.family}`
 
     const textLength = gCtx.measureText(line.txt).width
@@ -253,9 +235,9 @@ function drawFrame() {
 }
 
 function drawRectangle(x, y, width, height) {
-    gCtx.beginPath();
-    gCtx.rect(x, y, width, height);
-    gCtx.stroke();
+    gCtx.beginPath()
+    gCtx.rect(x, y, width, height)
+    gCtx.stroke()
 }
 
 function drawArc(x, y, size = 5, color = 'blue') {
@@ -363,70 +345,9 @@ function onAlertUser(value) {
     setTimeout(() => {
         document.querySelector('[name="modal-alert"]').classList.add('hide')
 
-    }, 2500);
+    }, 2500)
 
 }
-
-// FONTS
-function setFonts() {
-    gImpact = new FontFace('gImpact', 'url(./fonts/impact/impact.ttf)');
-    gImpact.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gImpact loaded');
-    })
-
-    gBowlbyOne = new FontFace('gBowlbyOne', 'url(./fonts/BowlbyOne/BowlbyOne-Regular.ttf)');
-    gBowlbyOne.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gBowlbyOne loaded');
-
-    })
-
-    gBungee = new FontFace('gBungee', 'url(./fonts/Bungee/Bungee-Regular.ttf)');
-    gBungee.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gBungee loaded');
-
-    })
-
-    gIFrdokaOne = new FontFace('gIFrdokaOne', 'url(./fonts/FredokaOne/FredokaOne-Regular.ttf)');
-    gIFrdokaOne.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gIFrdokaOne loaded');
-
-    })
-
-    gRighteous = new FontFace('gRighteous', 'url(./fonts/Righteous/Righteous-Regular.ttf)');
-    gRighteous.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gRighteous loaded');
-    })
-
-    gRighteous = new FontFace('gRighteous', 'url(./fonts/Righteous/Righteous-Regular.ttf)');
-    gRighteous.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gRighteous loaded');
-    })
-
-    gOleoScriptRegular = new FontFace('gOleoScriptRegular', 'url(./fonts/OleoScript/OleoScript-Regular.ttf)');
-    gOleoScriptRegular.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gOleoScriptRegular loaded');
-    })
-
-    gOleoScriptBold = new FontFace('gOleoScriptBold', 'url(./fonts/OleoScript/OleoScript-Bold.ttf)');
-    gOleoScriptBold.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gOleoScriptBold loaded');
-    })
-
-    gFASolid = new FontFace('gFASolid', 'url(./fonts/fa/fa-solid-900.ttf)');
-    gFASolid.load().then(function (font) {
-        document.fonts.add(font);
-        console.log('gFASolid loaded');
-    })
-}
-
 
 
 
