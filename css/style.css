@@ -118,8 +118,17 @@ footer {
     text-transform: capitalize;
     font-family: 'Courier New', Courier, monospace;
     color: var(--primary);
-    height: 200px;
+    height: fit-content;
     bottom: 0;
+    padding: 2rem;
+}
+
+footer img {
+    margin: 1rem;
+    width: 200px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 a,
@@ -545,6 +554,11 @@ img {
 
     .gallery-inputs.row {
         flex-direction: column;
+    }
+
+    .grid-images-container {
+        /* max-height: calc(100vh/2); */
+        /* overflow-y: scroll; */
     }
 
     [name="modal-upload"] {

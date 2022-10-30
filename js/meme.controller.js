@@ -160,7 +160,7 @@ function setCanvasAspectRatio() {
 
 function renderMeme() {
     clearCanvas()
-    var { selectedImgId, lines, selectedLineIdx, url } = getMeme()
+    var { lines, selectedLineIdx, url } = getMeme()
 
     const img = new Image()
     img.src = url
@@ -200,6 +200,7 @@ function resetMemeTextInput() {
 
 function setMemeTextInput() {
     const { selectedLineIdx, lines } = getMeme()
+    if (selectedLineIdx < 0) return
     const element = document.querySelector('.text-editor')
     element.value = lines[selectedLineIdx].txt
 }
@@ -227,6 +228,7 @@ function drawText(line, x, y) {
 
 function drawFrame() {
     const { selectedLineIdx, lines } = getMeme()
+    if (selectedLineIdx < 0) return
     const line = lines[selectedLineIdx]
     const lineWidth = line.length
     const lineHeight = line.size
@@ -239,13 +241,12 @@ function drawFrame() {
 
 function drawRectangle(x, y, width, height) {
     gCtx.beginPath()
-    gCtx.rect(x, y, width, height)
-    gCtx.strokeStyle = "#FF0000";
+    gCtx.rect(x - 5, y - 5, width + 10, height + 10)
+    gCtx.strokeStyle = "orange";
     gCtx.stroke()
-
 }
 
-function drawArc(x, y, size = 5, color = 'blue') {
+function drawArc(x, y, size = 5, color = 'orange') {
     gCtx.beginPath()
     gCtx.lineWidth = '6'
     gCtx.arc(x, y, size, 0, 2 * Math.PI)
