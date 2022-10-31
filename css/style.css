@@ -21,13 +21,8 @@
 
 /* FONTS */
 
-@font-face {
-    font-family: "fa-brands";
-    src: url("/fonts/fa/fa-brands-400.ttf")
-}
-
 .fa-brands::before {
-    font-family: fa-brands;
+    font-family: gFABrands;
 }
 
 .fa-brands.facebook::before {
@@ -592,11 +587,6 @@ img {
 
     .gallery-inputs.row {
         flex-direction: column;
-    }
-
-    .grid-images-container {
-        /* max-height: calc(100vh/2); */
-        /* overflow-y: scroll; */
     }
 
     [name="modal-upload"] {

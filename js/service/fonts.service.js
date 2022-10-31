@@ -9,6 +9,7 @@ var gRighteous
 var gOleoScriptRegular
 var gOleoScriptBold
 var gFASolid
+var gFABrands
 
 setFonts()
 
@@ -69,6 +70,11 @@ function setFonts() {
     gFASolid.load().then(function (font) {
         document.fonts.add(font)
         console.log('gFASolid loaded')
+    })
+    gFABrands = new FontFace('gFABrands', 'url(./fonts/fa/fa-brands-400.ttf)')
+    gFABrands.load().then(function (font) {
+        document.fonts.add(font)
+        console.log('gFABrands loaded')
     })
 }
 
