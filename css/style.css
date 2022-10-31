@@ -21,6 +21,31 @@
 
 /* FONTS */
 
+@font-face {
+    font-family: "fa-brands";
+    src: url("/fonts/fa/fa-brands-400.ttf")
+}
+
+.fa-brands::before {
+    font-family: fa-brands;
+}
+
+.fa-brands.facebook::before {
+    content: "\f39e";
+}
+
+.fa-brands.instagram::before {
+    content: "\f16d";
+}
+
+.fa-brands.linkedin::before {
+    content: "\f0e1";
+}
+
+.fa-brands.github::before {
+    content: "\f09b";
+}
+
 .fa-solid::before {
     font-family: gFASolid;
 }
@@ -130,6 +155,19 @@ footer img {
     object-fit: cover;
     border-radius: 50%;
 }
+
+.social {
+    margin-block: 1em;
+
+}
+
+.social a {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 2rem;
+
+}
+
 
 a,
 button,
